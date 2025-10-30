@@ -521,17 +521,43 @@ async def get_currency_rates():
                     data = await resp.json()
                     rates = data.get("rates", {})
                     
-                    result = {
-                        "usd_try": round(1 / rates.get("USD", 0.03), 2) if rates.get("USD") else 35.50,
-                        "eur_try": round(1 / rates.get("EUR", 0.028), 2) if rates.get("EUR") else 38.20,
-                        "gold_try": 3250.00,  # Mock data
-                        "silver_try": 38.50,   # Mock data
-                        "timestamp": datetime.now(timezone.utc).isoformat()
-                    }
-                    
-                    currency_cache["data"] = result
-                    currency_cache["timestamp"] = datetime.now(timezone.utc)
-                    return result
+                    usd_try = round(1 / rates.get("USD", 0.03), 2) if rates.get("USD") else 35.50
+                    eur_try = round(1 / rates.get("EUR", 0.028), 2) if rates.get("EUR") else 38.20
+                else:
+                    usd_try = 35.50
+                    eur_try = 38.20
+            
+            # Get Gold and Silver prices in TRY
+            gold_try = 3250.00
+            silver_try = 38.50
+            
+            try:
+                # Try metalpriceapi.com (free, no key required for basic usage)
+                async with session.get("https://api.metalpriceapi.com/v1/latest?base=TRY&currencies=XAU,XAG") as metal_resp:
+                    if metal_resp.status == 200:
+                        metal_data = await metal_resp.json()
+                        if metal_data.get("success"):
+                            # API returns TRY per ounce of gold/silver
+                            rates_metal = metal_data.get("rates", {})
+                            # Convert from per ounce to per gram (1 troy ounce = 31.1035 grams)
+                            if rates_metal.get("XAU"):
+                                gold_try = round((1 / rates_metal["XAU"]) * 31.1035, 2)
+                            if rates_metal.get("XAG"):
+                                silver_try = round((1 / rates_metal["XAG"]) * 31.1035, 2)
+            except Exception as metal_error:
+                logging.warning(f"Metal price API error: {metal_error}, using fallback")
+            
+            result = {
+                "usd_try": usd_try,
+                "eur_try": eur_try,
+                "gold_try": gold_try,
+                "silver_try": silver_try,
+                "timestamp": datetime.now(timezone.utc).isoformat()
+            }
+            
+            currency_cache["data"] = result
+            currency_cache["timestamp"] = datetime.now(timezone.utc)
+            return result
     except Exception as e:
         logging.error(f"Currency API error: {e}")
     
