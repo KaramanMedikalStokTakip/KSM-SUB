@@ -132,6 +132,7 @@ class Customer(BaseModel):
     address: Optional[str] = None
     notes: Optional[str] = None
     total_spent: float = 0
+    deleted: bool = False
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class CustomerCreate(BaseModel):
