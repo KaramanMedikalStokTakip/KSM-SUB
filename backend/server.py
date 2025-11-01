@@ -409,7 +409,7 @@ async def create_customer(customer_data: CustomerCreate, current_user: User = De
 
 @api_router.get("/customers", response_model=List[Customer])
 async def get_customers(current_user: User = Depends(get_current_user)):
-    customers = await db.customers.find({}, {"_id": 0}).to_list(1000)
+    customers = await db.customers.find({"deleted": {"$ne": True}}, {"_id": 0}).to_list(1000)
     for c in customers:
         if isinstance(c["created_at"], str):
             c["created_at"] = datetime.fromisoformat(c["created_at"])
