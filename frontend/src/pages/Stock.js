@@ -396,6 +396,90 @@ function Stock() {
           </CardContent>
         </Card>
       )}
+
+      {/* Price Comparison Dialog */}
+      <Dialog open={priceCompareDialogOpen} onOpenChange={setPriceCompareDialogOpen}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Fiyat Karşılaştırması</DialogTitle>
+          </DialogHeader>
+          {selectedProduct && (
+            <div className="space-y-4">
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <h3 className="font-semibold text-lg text-gray-800">{selectedProduct.name}</h3>
+                <p className="text-sm text-gray-600">{selectedProduct.brand} - {selectedProduct.category}</p>
+                <div className="mt-2">
+                  <span className="text-sm text-gray-600">Mevcut Fiyatınız: </span>
+                  <span className="font-bold text-blue-600">₺{selectedProduct.sale_price.toFixed(2)}</span>
+                </div>
+              </div>
+
+              {priceSearchLoading ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="loading-spinner"></div>
+                  <p className="ml-3 text-gray-600">Fiyatlar aranıyor...</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-gray-700 mb-3">İnternet Siteleri (En Düşük 10 Fiyat)</h4>
+                  {priceResults.length === 0 ? (
+                    <p className="text-center text-gray-500 py-8">Fiyat bilgisi bulunamadı</p>
+                  ) : (
+                    priceResults.map((result, index) => (
+                      <div 
+                        key={index} 
+                        className={`flex justify-between items-center p-3 rounded-lg border ${
+                          index === 0 ? 'bg-green-50 border-green-200' : 'bg-white border-gray-200'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold ${
+                            index === 0 ? 'bg-green-500 text-white' : 
+                            index === 1 ? 'bg-blue-500 text-white' : 
+                            index === 2 ? 'bg-orange-500 text-white' : 
+                            'bg-gray-300 text-gray-700'
+                          }`}>
+                            {index + 1}
+                          </div>
+                          <div>
+                            <p className="font-medium text-gray-800">{result.site}</p>
+                            {result.available ? (
+                              <span className="text-xs text-green-600">Stokta var</span>
+                            ) : (
+                              <span className="text-xs text-red-600">Stokta yok</span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <p className={`text-lg font-bold ${
+                            index === 0 ? 'text-green-600' : 'text-gray-800'
+                          }`}>
+                            ₺{result.price.toFixed(2)}
+                          </p>
+                          <a 
+                            href={result.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 text-sm underline"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            Siteye Git
+                          </a>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                  <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <p className="text-xs text-yellow-800">
+                      ℹ️ Bu fiyatlar örnek amaçlıdır. Gerçek zamanlı fiyat karşılaştırması için harici bir API entegrasyonu gereklidir.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
