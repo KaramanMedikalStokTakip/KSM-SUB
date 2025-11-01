@@ -458,11 +458,6 @@ function Stock() {
                       </div>
                     ))
                   )}
-                  <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <p className="text-xs text-yellow-800">
-                      ℹ️ Bu fiyatlar örnek amaçlıdır. Gerçek zamanlı fiyat karşılaştırması için harici bir API entegrasyonu gereklidir.
-                    </p>
-                  </div>
                 </div>
               )}
             </div>
