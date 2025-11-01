@@ -584,6 +584,16 @@ class BackendTester:
         if login_success:
             dashboard_success = self.test_dashboard_endpoint()
         
+        # Test 6: Customer Soft Delete (NEW FEATURE - requires auth)
+        customer_delete_success = False
+        if login_success:
+            customer_delete_success = self.test_customer_soft_delete()
+        
+        # Test 7: Product Price Comparison (NEW FEATURE - requires auth)
+        price_comparison_success = False
+        if login_success:
+            price_comparison_success = self.test_product_price_comparison()
+        
         # Summary
         print("\n" + "=" * 60)
         print("🏁 TEST SUMMARY")
@@ -608,13 +618,29 @@ class BackendTester:
         if not currency_success:
             critical_issues.append("Currency API (EN ÖNEMLİ) - Not working")
         
+        # New feature assessment
+        new_feature_issues = []
+        if not customer_delete_success:
+            new_feature_issues.append("Customer Soft Delete - Not working")
+        if not price_comparison_success:
+            new_feature_issues.append("Product Price Comparison - Not working")
+        
         if critical_issues:
             print(f"\n🚨 CRITICAL ISSUES:")
             for issue in critical_issues:
                 print(f"  - {issue}")
+        
+        if new_feature_issues:
+            print(f"\n⚠️ NEW FEATURE ISSUES:")
+            for issue in new_feature_issues:
+                print(f"  - {issue}")
+        
+        if critical_issues:
             return False
         else:
             print(f"\n✅ All critical tests passed!")
+            if new_feature_issues:
+                print(f"⚠️ Some new features need attention")
             return True
 
 def main():
