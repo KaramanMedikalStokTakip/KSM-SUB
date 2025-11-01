@@ -146,6 +146,23 @@ function Settings() {
     }
   };
 
+  const handleDeleteUser = async (userId) => {
+    if (userId === user.id) {
+      toast.error('Kendi hesabınızı silemezsiniz');
+      return;
+    }
+    
+    if (window.confirm('Bu kullanıcıyı silmek istediğinizden emin misiniz?')) {
+      try {
+        await axios.delete(`${API}/users/${userId}`);
+        toast.success('Kullanıcı başarıyla silindi');
+        fetchUsers();
+      } catch (error) {
+        toast.error(error.response?.data?.detail || 'Kullanıcı silinemedi');
+      }
+    }
+  };
+
   const handlePermissionChange = (role, permission) => {
     setRolePermissions(prev => ({
       ...prev,
