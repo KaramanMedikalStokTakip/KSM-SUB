@@ -88,34 +88,23 @@ function Stock() {
     setPriceResults([]);
 
     try {
-      // Get product info from backend
+      // Get real price comparison from backend
       const response = await axios.get(`${API}/products/${product.id}/price-comparison`);
       
-      // Simulated price search results (in real scenario, this would be web search)
-      // You would integrate with a real price comparison API or web scraping service
-      const mockResults = [
-        { site: 'Hepsiburada', price: product.sale_price * 0.95, url: 'https://www.hepsiburada.com', available: true },
-        { site: 'Trendyol', price: product.sale_price * 0.92, url: 'https://www.trendyol.com', available: true },
-        { site: 'N11', price: product.sale_price * 0.98, url: 'https://www.n11.com', available: true },
-        { site: 'Gittigidiyor', price: product.sale_price * 1.02, url: 'https://www.gittigidiyor.com', available: true },
-        { site: 'Amazon TR', price: product.sale_price * 0.89, url: 'https://www.amazon.com.tr', available: true },
-        { site: 'Çiçeksepeti', price: product.sale_price * 1.05, url: 'https://www.ciceksepeti.com', available: true },
-        { site: 'Akakçe', price: product.sale_price * 0.93, url: 'https://www.akakce.com', available: true },
-        { site: 'Epttavm', price: product.sale_price * 0.96, url: 'https://www.epttavm.com', available: true },
-        { site: 'Morhipo', price: product.sale_price * 1.01, url: 'https://www.morhipo.com', available: true },
-        { site: 'Beymen', price: product.sale_price * 1.08, url: 'https://www.beymen.com', available: false }
-      ].sort((a, b) => a.price - b.price).slice(0, 10);
-
-      // Add some randomness to make it more realistic
-      const resultsWithVariation = mockResults.map(result => ({
-        ...result,
-        price: parseFloat((result.price + (Math.random() * 10 - 5)).toFixed(2))
-      }));
-
-      setPriceResults(resultsWithVariation);
-      toast.info('Fiyat araması tamamlandı (Demo veriler)');
+      if (response.data.price_results && response.data.price_results.length > 0) {
+        setPriceResults(response.data.price_results);
+        toast.success(`${response.data.result_count} site üzerinden fiyat karşılaştırması yapıldı`);
+      } else if (response.data.error) {
+        toast.error(response.data.error);
+        // Show empty state
+        setPriceResults([]);
+      } else {
+        toast.info('Fiyat bilgisi bulunamadı');
+        setPriceResults([]);
+      }
     } catch (error) {
       toast.error('Fiyat karşılaştırması başarısız');
+      setPriceResults([]);
     } finally {
       setPriceSearchLoading(false);
     }
