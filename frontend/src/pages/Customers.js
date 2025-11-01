@@ -11,6 +11,7 @@ import { Label } from '../components/ui/label';
 import { Plus, Eye, Trash2 } from 'lucide-react';
 
 function Customers() {
+  const { user } = useAuth();
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [purchases, setPurchases] = useState([]);
