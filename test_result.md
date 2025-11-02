@@ -199,65 +199,73 @@ backend:
           comment: "Dashboard endpoint working correctly. GET /api/reports/dashboard requires authentication and returns all expected fields: total_products, low_stock_count, today_sales_count, today_revenue, week_sales_count, week_revenue. All values are properly numeric."
 
 frontend:
-  - task: "Customer Management - Remove Total Spent Display"
+  - task: "Stock Management - Fix Price Comparison Links"
     implemented: true
     working: "NA"
-    file: "frontend/src/pages/Customers.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: true
-    status_history:
-        - working: "NA"
-          agent: "main"
-          comment: "Removed total_spent display section from customer cards. Customer cards now show name, phone, email, date, notes, and purchase history button only."
-
-  - task: "Customer Management - Add Delete Button (Admin Only)"
-    implemented: true
-    working: "NA"
-    file: "frontend/src/pages/Customers.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: true
-    status_history:
-        - working: "NA"
-          agent: "main"
-          comment: "Added delete button to customer cards. Button only visible for users with 'yönetici' role. Calls DELETE /api/customers/{customer_id} endpoint with confirmation dialog."
-
-  - task: "Calendar - Event Detail Popup"
-    implemented: true
-    working: "NA"
-    file: "frontend/src/pages/Calendar.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: true
-    status_history:
-        - working: "NA"
-          agent: "main"
-          comment: "Made calendar events clickable. Added event detail popup showing title, description, date/time, and alarm status. Added delete button in popup. Events in both date view and all events list are clickable."
-
-  - task: "Product Price Comparison Feature"
-    implemented: true
-    working: true
     file: "frontend/src/pages/Stock.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: "NA"
           agent: "main"
-          comment: "Made product name clickable in product cards. Added price comparison popup that shows top 10 lowest prices from different websites (demo data). Shows site name, price, availability, and links. Highlights best price in green."
-        - working: true
+          comment: "Fixed price comparison dialog links. Links now open in new tab correctly with improved styling and arrow indicator. Removed onClick handler that was interfering with navigation."
+
+  - task: "Stock Management - List/Grid View Toggle"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/Stock.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
           agent: "main"
-          comment: "UPGRADED WITH SERPAPI: Frontend now uses real-time SerpAPI data from backend. Removed demo warning message. Shows 'Gerçek Zamanlı' badge when real prices loaded. Displays actual prices from Turkish e-commerce sites with working links. Price comparison fully functional with real data."
+          comment: "Added view mode toggle buttons (Grid/List) in header. Grid view shows product cards (default). List view shows table with all product details including image, name, brand, category, barcode, stock, price, and actions. Both views support all features including price comparison and edit/delete."
+
+  - task: "Stock Management - Advanced Search & Filtering"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/Stock.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Added comprehensive filtering system. Filter panel with 4 fields: Product Name, Barcode, Brand, Category. All filters work simultaneously. Shows filtered count vs total. Clear filters button included. Filter toggle button in header."
+
+  - task: "Stock Management - Barcode Scanner Integration"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/Stock.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Added dual barcode scanning support: 1) USB/Bluetooth barcode reader support - barcode input field auto-focuses and accepts scanned data, 2) Camera barcode scanner - added camera button with html5-qrcode library integration. Supports QR codes and all common barcode formats (EAN-13, EAN-8, UPC-A, UPC-E, CODE-39, CODE-93, CODE-128). Scanner dialog with live preview."
 
 metadata:
-  created_by: "testing_agent"
-  version: "1.0"
-  test_sequence: 2
+  created_by: "main_agent"
+  version: "2.0"
+  test_sequence: 0
   run_ui: false
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Stock Management - Fix Price Comparison Links"
+    - "Stock Management - List/Grid View Toggle"
+    - "Stock Management - Advanced Search & Filtering"
+    - "Stock Management - Barcode Scanner Integration"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    - agent: "main"
+      message: "Implemented all 4 requested stock management improvements: 1) Fixed price comparison links to open correctly in new tabs, 2) Added Grid/List view toggle with full table view, 3) Implemented advanced filtering with multiple simultaneous filters (name, barcode, brand, category), 4) Added dual barcode scanning (USB/Bluetooth + camera with html5-qrcode). All features integrated seamlessly. Ready for testing."
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
