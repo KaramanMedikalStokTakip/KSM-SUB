@@ -767,10 +767,9 @@ function Stock() {
                             href={result.url} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 text-sm underline"
-                            onClick={(e) => e.stopPropagation()}
+                            className="text-blue-600 hover:text-blue-800 text-sm underline whitespace-nowrap px-2 py-1"
                           >
-                            Siteye Git
+                            Siteye Git →
                           </a>
                         </div>
                       </div>
