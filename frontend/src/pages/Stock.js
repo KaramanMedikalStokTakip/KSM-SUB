@@ -57,11 +57,100 @@ function Stock() {
     try {
       const response = await axios.get(`${API}/products`);
       setProducts(response.data);
+      setFilteredProducts(response.data);
     } catch (error) {
       toast.error('Ürünler yüklenemedi');
     } finally {
       setLoading(false);
     }
+  };
+
+  const applyFilters = () => {
+    let filtered = [...products];
+
+    if (filters.name) {
+      filtered = filtered.filter(p => 
+        p.name.toLowerCase().includes(filters.name.toLowerCase())
+      );
+    }
+
+    if (filters.barcode) {
+      filtered = filtered.filter(p => 
+        p.barcode.toLowerCase().includes(filters.barcode.toLowerCase())
+      );
+    }
+
+    if (filters.brand) {
+      filtered = filtered.filter(p => 
+        p.brand.toLowerCase().includes(filters.brand.toLowerCase())
+      );
+    }
+
+    if (filters.category) {
+      filtered = filtered.filter(p => 
+        p.category.toLowerCase().includes(filters.category.toLowerCase())
+      );
+    }
+
+    setFilteredProducts(filtered);
+  };
+
+  const clearFilters = () => {
+    setFilters({
+      name: '',
+      barcode: '',
+      brand: '',
+      category: ''
+    });
+  };
+
+  const startBarcodeScanner = () => {
+    setScannerDialogOpen(true);
+    
+    setTimeout(() => {
+      const html5QrcodeScanner = new Html5QrcodeScanner(
+        "barcode-scanner-region",
+        { 
+          fps: 10, 
+          qrbox: { width: 250, height: 250 },
+          aspectRatio: 1.0,
+          formatsToSupport: [
+            0, // QR_CODE
+            8, // EAN_13
+            9, // EAN_8
+            10, // UPC_A
+            11, // UPC_E
+            13, // CODE_39
+            14, // CODE_93
+            15, // CODE_128
+          ]
+        },
+        false
+      );
+
+      html5QrcodeScanner.render(
+        (decodedText) => {
+          // Barcode başarıyla tarandı
+          setFilters({ ...filters, barcode: decodedText });
+          toast.success(`Barkod tarandı: ${decodedText}`);
+          html5QrcodeScanner.clear();
+          setScannerDialogOpen(false);
+        },
+        (error) => {
+          // Tarama hatası (normal, sürekli tarama yapıyor)
+        }
+      );
+
+      scannerRef.current = html5QrcodeScanner;
+    }, 100);
+  };
+
+  const stopBarcodeScanner = () => {
+    if (scannerRef.current) {
+      scannerRef.current.clear().catch(err => console.error(err));
+      scannerRef.current = null;
+    }
+    setScannerDialogOpen(false);
   };
 
   const handleImageUpload = (e) => {
