@@ -252,7 +252,9 @@ function Stock() {
       purchase_price: product.purchase_price,
       sale_price: product.sale_price,
       description: product.description || '',
-      image_base64: product.image_url || ''
+      image_base64: product.image_url || '',
+      unit_type: product.unit_type || 'adet',
+      package_quantity: product.package_quantity || null
     });
     setDialogOpen(true);
   };
