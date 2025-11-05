@@ -25,6 +25,7 @@ function Stock() {
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
   const [showFilters, setShowFilters] = useState(false);
   const [scannerDialogOpen, setScannerDialogOpen] = useState(false);
+  const [cameraError, setCameraError] = useState('');
   const scannerRef = useRef(null);
   const [formData, setFormData] = useState({
     name: '',
