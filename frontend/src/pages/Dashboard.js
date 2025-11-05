@@ -119,7 +119,6 @@ function Dashboard() {
               <div>
                 <p className="text-sm text-gray-500">Düşük Stok</p>
                 <h3 className="text-3xl font-bold text-orange-600">{stats?.low_stock_count || 0}</h3>
-                <p className="text-xs text-orange-500 mt-1">Tıklayın →</p>
               </div>
               <div className="bg-orange-100 p-3 rounded-full">
                 <TrendingDown className="w-6 h-6 text-orange-600" />
