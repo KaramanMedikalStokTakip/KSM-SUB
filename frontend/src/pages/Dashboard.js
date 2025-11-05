@@ -91,12 +91,17 @@ function Dashboard() {
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="stat-card" data-testid="total-products-card">
+        <Card 
+          className="stat-card cursor-pointer hover:shadow-lg transition-shadow" 
+          data-testid="total-products-card"
+          onClick={() => navigate('/stock')}
+        >
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-500">Toplam Ürün</p>
                 <h3 className="text-3xl font-bold text-gray-800">{stats?.total_products || 0}</h3>
+                <p className="text-xs text-blue-500 mt-1">Tıklayın →</p>
               </div>
               <div className="bg-blue-100 p-3 rounded-full">
                 <Package className="w-6 h-6 text-blue-600" />
