@@ -204,9 +204,10 @@ frontend:
 
 metadata:
   created_by: "main_agent"
-  version: "2.0"
+  version: "3.0"
   test_sequence: 0
   run_ui: false
+  pwa_enabled: true
 
 test_plan:
   current_focus:
