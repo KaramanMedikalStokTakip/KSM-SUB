@@ -59,7 +59,9 @@ function Layout({ children }) {
       {/* Mobil Header */}
       <div className="lg:hidden bg-white border-b sticky top-0 z-40">
         <div className="flex items-center justify-between p-4">
-          <img src="/logo.png" alt="Karaman Sağlık Logo" className="h-10 w-auto object-contain" />
+          <Link to="/">
+            <img src="/logo.png" alt="Karaman Sağlık Logo" className="h-10 w-auto object-contain cursor-pointer" />
+          </Link>
           <Button
             variant="ghost"
             size="sm"
