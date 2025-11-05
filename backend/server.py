@@ -77,6 +77,8 @@ class Product(BaseModel):
     sale_price: float
     description: Optional[str] = None
     image_url: Optional[str] = None
+    unit_type: str = "adet"  # adet veya kutu
+    package_quantity: Optional[int] = None  # Kutu içeriği adedi (sadece kutu için)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
@@ -91,6 +93,8 @@ class ProductCreate(BaseModel):
     sale_price: float
     description: Optional[str] = None
     image_base64: Optional[str] = None
+    unit_type: str = "adet"
+    package_quantity: Optional[int] = None
 
 class ProductUpdate(BaseModel):
     name: Optional[str] = None
@@ -103,6 +107,8 @@ class ProductUpdate(BaseModel):
     sale_price: Optional[float] = None
     description: Optional[str] = None
     image_base64: Optional[str] = None
+    unit_type: Optional[str] = None
+    package_quantity: Optional[int] = None
 
 class Sale(BaseModel):
     model_config = ConfigDict(extra="ignore")
