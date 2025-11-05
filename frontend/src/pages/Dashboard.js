@@ -101,7 +101,6 @@ function Dashboard() {
               <div>
                 <p className="text-sm text-gray-500">Toplam Ürün</p>
                 <h3 className="text-3xl font-bold text-gray-800">{stats?.total_products || 0}</h3>
-                <p className="text-xs text-blue-500 mt-1">Tıklayın →</p>
               </div>
               <div className="bg-blue-100 p-3 rounded-full">
                 <Package className="w-6 h-6 text-blue-600" />
