@@ -779,20 +779,31 @@ function Stock() {
       <Dialog open={scannerDialogOpen} onOpenChange={(open) => {
         if (!open) stopBarcodeScanner();
       }}>
-        <DialogContent className="max-w-xl">
+        <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Barkod Tara</DialogTitle>
+            <DialogTitle>📷 Barkod Tara</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <div id="barcode-scanner-region" className="w-full min-h-[300px] rounded-lg overflow-hidden"></div>
-            <p className="text-sm text-gray-600 text-center">
-              📱 Barkodu kameranın önüne getirin. Otomatik olarak taranacaktır.
-            </p>
-            <p className="text-xs text-gray-500 text-center">
-              💡 Kamera açılmazsa lütfen tarayıcınızın kamera iznini kontrol edin.
-            </p>
+            <div id="barcode-scanner-region" className="w-full min-h-[300px] rounded-lg overflow-hidden bg-black"></div>
+            <div className="space-y-2">
+              <p className="text-sm text-gray-600 text-center font-medium">
+                📱 Barkodu kameranın önüne getirin
+              </p>
+              <p className="text-xs text-gray-500 text-center">
+                Barkod otomatik olarak taranacaktır
+              </p>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-xs text-gray-700">
+                <p className="font-semibold mb-1">💡 Kamera açılmadıysa:</p>
+                <ul className="list-disc list-inside space-y-1 ml-2">
+                  <li>Tarayıcı izin isteğinde "İzin Ver" seçeneğini tıklayın</li>
+                  <li>Ayarlardan kamera iznini kontrol edin</li>
+                  <li>Sayfayı yenileyin ve tekrar deneyin</li>
+                  <li>Güvenli bağlantı (HTTPS) gerekir</li>
+                </ul>
+              </div>
+            </div>
             <Button variant="outline" onClick={stopBarcodeScanner} className="w-full">
-              İptal
+              Kapat
             </Button>
           </div>
         </DialogContent>
