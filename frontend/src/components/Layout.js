@@ -56,9 +56,64 @@ function Layout({ children }) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Currency Ticker */}
+      {/* Mobil Header */}
+      <div className="lg:hidden bg-white border-b sticky top-0 z-40">
+        <div className="flex items-center justify-between p-4">
+          <img src="/logo.png" alt="Karaman Sağlık Logo" className="h-10 w-auto object-contain" />
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            data-testid="mobile-menu-btn"
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </Button>
+        </div>
+        {/* Currency Ticker - Mobil */}
+        {currency && (
+          <div className="currency-ticker" data-testid="currency-ticker">
+            <div className="currency-scroll">
+              <div className="currency-item">
+                <DollarSign className="w-3 h-3" />
+                <span className="text-xs">USD: ₺{currency.usd_try}</span>
+              </div>
+              <div className="currency-item">
+                <Euro className="w-3 h-3" />
+                <span className="text-xs">EUR: ₺{currency.eur_try}</span>
+              </div>
+              <div className="currency-item">
+                <TrendingUp className="w-3 h-3" />
+                <span className="text-xs">Altın: ₺{currency.gold_try}</span>
+              </div>
+              <div className="currency-item">
+                <TrendingUp className="w-3 h-3" />
+                <span className="text-xs">Gümüş: ₺{currency.silver_try}</span>
+              </div>
+              {/* Duplicate for seamless loop */}
+              <div className="currency-item">
+                <DollarSign className="w-3 h-3" />
+                <span className="text-xs">USD: ₺{currency.usd_try}</span>
+              </div>
+              <div className="currency-item">
+                <Euro className="w-3 h-3" />
+                <span className="text-xs">EUR: ₺{currency.eur_try}</span>
+              </div>
+              <div className="currency-item">
+                <TrendingUp className="w-3 h-3" />
+                <span className="text-xs">Altın: ₺{currency.gold_try}</span>
+              </div>
+              <div className="currency-item">
+                <TrendingUp className="w-3 h-3" />
+                <span className="text-xs">Gümüş: ₺{currency.silver_try}</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Currency Ticker */}
       {currency && (
-        <div className="currency-ticker" data-testid="currency-ticker">
+        <div className="hidden lg:block currency-ticker" data-testid="currency-ticker-desktop">
           <div className="currency-scroll">
             <div className="currency-item">
               <DollarSign className="w-4 h-4" />
@@ -98,11 +153,11 @@ function Layout({ children }) {
       )}
 
       <div className="flex">
-        {/* Sidebar */}
+        {/* Desktop Sidebar */}
         <aside
           className={`${
             sidebarOpen ? 'w-64' : 'w-20'
-          } bg-white border-r transition-all duration-300 min-h-screen flex flex-col`}
+          } hidden lg:flex bg-white border-r transition-all duration-300 min-h-screen flex-col`}
           data-testid="sidebar"
         >
           <div className="p-4 border-b flex items-center justify-between">
