@@ -109,88 +109,116 @@ function Stock() {
 
   const startBarcodeScanner = () => {
     setScannerDialogOpen(true);
+    setCameraError('');
     
     setTimeout(() => {
-      const html5QrCode = new Html5Qrcode("barcode-scanner-region");
-      
-      const config = {
-        fps: 10,
-        qrbox: { width: 250, height: 250 },
-        aspectRatio: 1.0,
-        formatsToSupport: [
-          0, // QR_CODE
-          8, // EAN_13
-          9, // EAN_8
-          10, // UPC_A
-          11, // UPC_E
-          13, // CODE_39
-          14, // CODE_93
-          15, // CODE_128
-        ]
-      };
-      
-      const qrCodeSuccessCallback = (decodedText) => {
-        // Barcode başarıyla tarandı
-        setFilters({ ...filters, barcode: decodedText });
-        toast.success(`Barkod tarandı: ${decodedText}`);
-        html5QrCode.stop().then(() => {
-          setScannerDialogOpen(false);
-        }).catch(err => console.error('Stop error:', err));
-      };
-      
-      const qrCodeErrorCallback = (errorMessage) => {
-        // Tarama hatası (normal, sürekli tarama yapıyor)
-      };
-      
-      // Try to start with environment facing mode (back camera on mobile)
-      html5QrCode.start(
-        { facingMode: "environment" },
-        config,
-        qrCodeSuccessCallback,
-        qrCodeErrorCallback
-      ).then(() => {
-        console.log('Camera started successfully');
-        scannerRef.current = html5QrCode;
-      }).catch((err) => {
-        console.error('Environment camera error:', err);
-        // Fallback: try with user facing camera
+      try {
+        const html5QrCode = new Html5Qrcode("barcode-scanner-region");
+        
+        const config = {
+          fps: 10,
+          qrbox: { width: 250, height: 250 },
+          formatsToSupport: [
+            0, // QR_CODE
+            8, // EAN_13
+            9, // EAN_8
+            10, // UPC_A
+            11, // UPC_E
+            13, // CODE_39
+            14, // CODE_93
+            15, // CODE_128
+          ]
+        };
+        
+        const qrCodeSuccessCallback = (decodedText) => {
+          console.log('Barcode scanned:', decodedText);
+          setFilters(prev => ({ ...prev, barcode: decodedText }));
+          toast.success(`Barkod tarandı: ${decodedText}`);
+          
+          if (scannerRef.current) {
+            scannerRef.current.stop().then(() => {
+              console.log('Scanner stopped after success');
+              scannerRef.current = null;
+              setScannerDialogOpen(false);
+            }).catch(err => {
+              console.error('Stop error:', err);
+              scannerRef.current = null;
+              setScannerDialogOpen(false);
+            });
+          }
+        };
+        
+        const qrCodeErrorCallback = (errorMessage) => {
+          // Silent - scanning errors are normal during continuous scanning
+        };
+        
+        console.log('Attempting to start camera...');
+        
+        // Try environment (back) camera first for mobile
         html5QrCode.start(
-          { facingMode: "user" },
+          { facingMode: "environment" },
           config,
           qrCodeSuccessCallback,
           qrCodeErrorCallback
         ).then(() => {
-          console.log('Front camera started successfully');
+          console.log('✅ Back camera started successfully');
           scannerRef.current = html5QrCode;
-        }).catch((err2) => {
-          console.error('User camera error:', err2);
-          // Last fallback: try with any available camera
-          Html5Qrcode.getCameras().then(devices => {
-            if (devices && devices.length > 0) {
-              html5QrCode.start(
-                devices[0].id,
-                config,
-                qrCodeSuccessCallback,
-                qrCodeErrorCallback
-              ).then(() => {
-                console.log('Camera started with device ID');
-                scannerRef.current = html5QrCode;
-              }).catch(err3 => {
-                console.error('Device ID camera error:', err3);
-                toast.error('Kamera açılamadı. Lütfen kamera iznini verin ve sayfayı yenileyin.');
-                setScannerDialogOpen(false);
-              });
-            } else {
-              toast.error('Kamera bulunamadı.');
-              setScannerDialogOpen(false);
-            }
-          }).catch(err3 => {
-            console.error('getCameras error:', err3);
-            toast.error('Kamera erişimi reddedildi.');
-            setScannerDialogOpen(false);
+          setCameraError('');
+        }).catch((err) => {
+          console.warn('❌ Back camera failed:', err.message);
+          
+          // Fallback to front camera
+          html5QrCode.start(
+            { facingMode: "user" },
+            config,
+            qrCodeSuccessCallback,
+            qrCodeErrorCallback
+          ).then(() => {
+            console.log('✅ Front camera started successfully');
+            scannerRef.current = html5QrCode;
+            setCameraError('');
+          }).catch((err2) => {
+            console.warn('❌ Front camera failed:', err2.message);
+            
+            // Last attempt: enumerate and use first available camera
+            Html5Qrcode.getCameras().then(devices => {
+              console.log('Available cameras:', devices);
+              
+              if (devices && devices.length > 0) {
+                const cameraId = devices[0].id;
+                console.log('Trying camera ID:', cameraId);
+                
+                html5QrCode.start(
+                  cameraId,
+                  config,
+                  qrCodeSuccessCallback,
+                  qrCodeErrorCallback
+                ).then(() => {
+                  console.log('✅ Camera started with ID');
+                  scannerRef.current = html5QrCode;
+                  setCameraError('');
+                }).catch(err3 => {
+                  console.error('❌ All camera attempts failed:', err3);
+                  setCameraError('Kamera açılamadı. Lütfen tarayıcı ayarlarından kamera iznini verin.');
+                  toast.error('Kamera izni gerekli!');
+                });
+              } else {
+                console.error('❌ No cameras found');
+                setCameraError('Kamera bulunamadı.');
+                toast.error('Kamera bulunamadı!');
+              }
+            }).catch(err3 => {
+              console.error('❌ getCameras failed:', err3);
+              setCameraError('Kamera listesi alınamadı. İzin verildi mi?');
+              toast.error('Kamera iznini kontrol edin!');
+            });
           });
         });
-      });
+      } catch (error) {
+        console.error('❌ Scanner initialization error:', error);
+        setCameraError('Barkod okuyucu başlatılamadı: ' + error.message);
+        toast.error('Bir hata oluştu!');
+      }
     }, 500);
   };
 
