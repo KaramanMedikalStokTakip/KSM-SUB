@@ -1,1 +1,126 @@
-# Here are your Instructions
+# 📦 Stok Yönetim ve CRM Sistemi
+
+Modern ve kullanıcı dostu bir stok yönetimi, müşteri takibi ve iş organizasyon sistemi.
+
+## ✨ Özellikler
+
+### 📊 Stok Yönetimi
+- Ürün ekleme, düzenleme, silme
+- Barkod ile ürün arama
+- Kamera ile barkod okuma
+- Kutu/adet bazında satış takibi
+- Stok uyarıları
+- Fiyat karşılaştırma
+
+### 👥 Müşteri Yönetimi
+- Müşteri kayıt ve takibi
+- Soft delete (geri getirilebilir silme)
+- Detaylı müşteri bilgileri
+
+### 📅 Takvim ve Etkinlikler
+- Randevu ve etkinlik yönetimi
+- Çift tıklama ile hızlı ekleme
+- Detaylı etkinlik görüntüleme
+
+### 💰 Satış Noktası (POS)
+- Hızlı satış işlemleri
+- Sepet yönetimi
+- Ödeme takibi
+
+### 📈 Raporlama
+- Satış raporları
+- Stok raporları
+- Gelir/gider analizi
+
+### 📱 PWA Desteği
+- Mobil cihaza kurulabilir
+- Offline çalışma
+- Hızlı yükleme
+- Native uygulama deneyimi
+
+## 🚀 Hızlı Başlangıç
+
+### Admin Girişi
+
+Uygulama otomatik olarak bir admin kullanıcısı oluşturur:
+
+```
+Kullanıcı Adı: admin
+Şifre:         Admin123!
+```
+
+> ⚠️ **Güvenlik:** İlk girişten sonra şifrenizi mutlaka değiştirin!
+
+## 📚 Dokümantasyon
+
+- **[PWA Kurulum Rehberi](PWA_KURULUM_REHBERI.md)** - Progressive Web App kurulumu
+- **[Admin Bilgileri](ADMIN_BILGILERI.md)** - Admin kullanıcı bilgileri
+
+## 🛠️ Teknolojiler
+
+### Backend
+- FastAPI (Python)
+- MongoDB
+- JWT Authentication
+- Passlib (Password Hashing)
+
+### Frontend
+- React 19
+- Tailwind CSS
+- Radix UI Components
+- React Router
+- Axios
+- PWA Support
+
+## 📦 Kurulum
+
+### Backend
+
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn server:app --host 0.0.0.0 --port 8001 --reload
+```
+
+### Frontend
+
+```bash
+cd frontend
+yarn install
+yarn start
+```
+
+## 🌐 PWA Kurulumu
+
+Uygulama Progressive Web App özelliklerine sahiptir. Detaylı kurulum talimatları için [PWA Kurulum Rehberi](PWA_KURULUM_REHBERI.md) dosyasına bakın.
+
+### Hızlı PWA Kurulumu
+
+**Android (Chrome):**
+1. Chrome'da uygulamayı açın
+2. ⋮ menü → "Ana ekrana ekle"
+3. "Yükle" butonuna tıklayın
+
+**iOS (Safari):**
+1. Safari'de uygulamayı açın
+2. Paylaş 📤 → "Ana Ekrana Ekle"
+3. "Ekle" butonuna tıklayın
+
+## 🔒 Güvenlik
+
+- JWT tabanlı authentication
+- Bcrypt password hashing
+- Role-based access control
+- CORS protection
+
+## 📄 Lisans
+
+Bu proje özel kullanım için geliştirilmiştir.
+
+## 🤝 Katkıda Bulunma
+
+Katkılarınızı bekliyoruz! Pull request göndermekten çekinmeyin.
+
+---
+
+**Made with ❤️ using Emergent.sh**
