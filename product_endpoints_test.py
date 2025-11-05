@@ -14,7 +14,7 @@ from datetime import datetime
 import time
 
 # Backend URL from frontend/.env
-BACKEND_URL = "https://calendar-update-1.preview.emergentagent.com/api"
+BACKEND_URL = "https://mobile-github-app.preview.emergentagent.com/api"
 
 class ProductEndpointsTester:
     def __init__(self):
