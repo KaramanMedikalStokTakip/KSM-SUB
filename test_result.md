@@ -211,13 +211,14 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Login - Logo Filigran Eklendi"
-    - "Calendar - Çift Tıklama ile Etkinlik Ekleme"
-    - "Stock - Kutu Satış Özelliği"
+    - "PWA Service Worker"
+    - "PWA Install Banner"
+    - "Offline Sayfası"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
   backend_testing_complete: true
+  pwa_features_complete: true
 
 agent_communication:
     - agent: "main"
