@@ -166,6 +166,42 @@ backend:
           comment: "Tested GET /api/products/{product_id}/price-comparison endpoint for price comparison links. Endpoint working correctly - returns all required fields (product_id, product_name, brand, category, current_price, barcode, price_results). Data validation passed, returns 404 for invalid product ID. SerpAPI integration functional with fallback to manual search links."
 
 frontend:
+  - task: "Login - Logo Filigran Eklendi"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/Login.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Login ekranının arka planına logo.png dosyası filigran olarak eklendi. Tam sayfa kaplıyor, %8 opacity, grayscale filtre uygulandı."
+
+  - task: "Calendar - Çift Tıklama ile Etkinlik Ekleme"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/Calendar.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Takvimde tarih üzerine çift tıklama yapınca etkinlik ekleme dialogu açılıyor. Seçili tarih otomatik olarak forma dolduruluyor."
+
+  - task: "Stock - Kutu Satış Özelliği"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/Stock.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Ürün formuna 'Satış Birimi' (Adet/Kutu) ve 'Kutu İçeriği' alanları eklendi. Kutu seçildiğinde kutu içeriği adedi zorunlu oluyor. Grid ve liste görünümlerinde kutu bilgisi ve toplam adet hesaplaması gösteriliyor."
+
   - task: "Stock Management - Fix Price Comparison Links"
     implemented: true
     working: "NA"
