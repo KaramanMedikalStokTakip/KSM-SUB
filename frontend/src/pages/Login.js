@@ -33,6 +33,16 @@ function Login() {
     setLoading(true);
     try {
       const response = await axios.post(`${API}/auth/login`, loginForm);
+      
+      // Save credentials if "remember me" is checked
+      if (rememberMe) {
+        localStorage.setItem('rememberedUsername', loginForm.username);
+        localStorage.setItem('rememberedPassword', loginForm.password);
+      } else {
+        localStorage.removeItem('rememberedUsername');
+        localStorage.removeItem('rememberedPassword');
+      }
+      
       login(response.data.access_token, response.data.user);
       toast.success('Giriş başarılı!');
       navigate('/');
