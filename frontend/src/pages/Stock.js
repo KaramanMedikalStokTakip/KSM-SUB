@@ -134,7 +134,14 @@ function Stock() {
         
         const qrCodeSuccessCallback = (decodedText) => {
           console.log('Barcode scanned:', decodedText);
-          setFilters(prev => ({ ...prev, barcode: decodedText }));
+          
+          // Update the correct field based on scanner mode
+          if (scannerMode === 'filter') {
+            setFilters(prev => ({ ...prev, barcode: decodedText }));
+          } else if (scannerMode === 'form') {
+            setFormData(prev => ({ ...prev, barcode: decodedText }));
+          }
+          
           toast.success(`Barkod tarandı: ${decodedText}`);
           
           if (scannerRef.current) {
