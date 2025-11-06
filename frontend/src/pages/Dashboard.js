@@ -52,13 +52,10 @@ function Dashboard() {
     }
   };
 
-  const handleBarcodeSearch = async (e) => {
-    e.preventDefault();
-    if (!barcodeSearch.trim()) return;
-
+  const searchProductByBarcode = async (barcode) => {
     setSearching(true);
     try {
-      const response = await axios.get(`${API}/products/barcode/${barcodeSearch}`);
+      const response = await axios.get(`${API}/products/barcode/${barcode}`);
       setFoundProduct(response.data);
       toast.success('Ürün bulundu!');
     } catch (error) {
@@ -69,10 +66,113 @@ function Dashboard() {
     }
   };
 
+  const handleBarcodeSearch = async (e) => {
+    e.preventDefault();
+    if (!barcodeSearch.trim()) return;
+    await searchProductByBarcode(barcodeSearch);
+  };
+
   const closeSearchDialog = () => {
     setSearchDialogOpen(false);
     setBarcodeSearch('');
     setFoundProduct(null);
+  };
+
+  const startBarcodeScanner = () => {
+    setScannerDialogOpen(true);
+    setCameraError('');
+    
+    setTimeout(() => {
+      try {
+        const html5QrCode = new Html5Qrcode("dashboard-barcode-scanner-region");
+        
+        const config = {
+          fps: 10,
+          qrbox: { width: 250, height: 250 },
+          formatsToSupport: [0, 8, 9, 10, 11, 13, 14, 15]
+        };
+        
+        const qrCodeSuccessCallback = (decodedText) => {
+          console.log('Barcode scanned in Dashboard:', decodedText);
+          
+          if (scannerRef.current) {
+            scannerRef.current.stop().then(() => {
+              scannerRef.current = null;
+              setScannerDialogOpen(false);
+              setSearchDialogOpen(true);
+              setBarcodeSearch(decodedText);
+              searchProductByBarcode(decodedText);
+            }).catch(err => {
+              console.error('Stop error:', err);
+              scannerRef.current = null;
+              setScannerDialogOpen(false);
+              setSearchDialogOpen(true);
+              setBarcodeSearch(decodedText);
+              searchProductByBarcode(decodedText);
+            });
+          }
+        };
+        
+        const qrCodeErrorCallback = () => {};
+        
+        html5QrCode.start(
+          { facingMode: "environment" },
+          config,
+          qrCodeSuccessCallback,
+          qrCodeErrorCallback
+        ).then(() => {
+          console.log('✅ Dashboard Camera started');
+          scannerRef.current = html5QrCode;
+          setCameraError('');
+        }).catch((err) => {
+          console.warn('❌ Back camera failed:', err.message);
+          html5QrCode.start(
+            { facingMode: "user" },
+            config,
+            qrCodeSuccessCallback,
+            qrCodeErrorCallback
+          ).then(() => {
+            scannerRef.current = html5QrCode;
+            setCameraError('');
+          }).catch((err2) => {
+            Html5Qrcode.getCameras().then(devices => {
+              if (devices && devices.length > 0) {
+                html5QrCode.start(devices[0].id, config, qrCodeSuccessCallback, qrCodeErrorCallback)
+                  .then(() => { scannerRef.current = html5QrCode; setCameraError(''); })
+                  .catch(() => { setCameraError('Kamera açılamadı'); toast.error('Kamera izni gerekli!'); });
+              } else {
+                setCameraError('Kamera bulunamadı');
+                toast.error('Kamera bulunamadı!');
+              }
+            }).catch(() => {
+              setCameraError('Kamera erişimi reddedildi');
+              toast.error('Kamera iznini kontrol edin!');
+            });
+          });
+        });
+      } catch (error) {
+        console.error('Scanner error:', error);
+        setCameraError('Barkod okuyucu başlatılamadı');
+        toast.error('Bir hata oluştu!');
+      }
+    }, 500);
+  };
+
+  const stopBarcodeScanner = () => {
+    if (scannerRef.current) {
+      scannerRef.current.stop()
+        .then(() => {
+          scannerRef.current = null;
+          setScannerDialogOpen(false);
+        })
+        .catch(err => {
+          console.error(err);
+          scannerRef.current = null;
+          setScannerDialogOpen(false);
+        });
+    } else {
+      setScannerDialogOpen(false);
+    }
   };
 
   if (loading) {
