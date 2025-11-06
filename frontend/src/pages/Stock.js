@@ -26,6 +26,7 @@ function Stock() {
   const [showFilters, setShowFilters] = useState(false);
   const [scannerDialogOpen, setScannerDialogOpen] = useState(false);
   const [cameraError, setCameraError] = useState('');
+  const [scannerMode, setScannerMode] = useState('filter'); // 'filter' or 'form'
   const scannerRef = useRef(null);
   const [formData, setFormData] = useState({
     name: '',
