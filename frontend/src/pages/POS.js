@@ -26,17 +26,13 @@ function POS() {
     barcodeRef.current?.focus();
   }, []);
 
-  const handleBarcodeSubmit = async (e) => {
-    e.preventDefault();
-    if (!barcodeInput.trim()) return;
-
+  const addProductToCart = async (barcode) => {
     try {
-      const response = await axios.get(`${API}/products/barcode/${barcodeInput}`);
+      const response = await axios.get(`${API}/products/barcode/${barcode}`);
       const product = response.data;
 
       if (product.quantity <= 0) {
         toast.error('Ürün stokta yok!');
-        setBarcodeInput('');
         return;
       }
 
@@ -44,7 +40,6 @@ function POS() {
       if (existingItem) {
         if (existingItem.quantity >= product.quantity) {
           toast.error('Stok yetersiz!');
-          setBarcodeInput('');
           return;
         }
         updateQuantity(product.id, existingItem.quantity + 1);
@@ -53,11 +48,111 @@ function POS() {
       }
 
       toast.success(`${product.name} sepete eklendi`);
-      setBarcodeInput('');
-      barcodeRef.current?.focus();
     } catch (error) {
       toast.error('Ürün bulunamadı!');
-      setBarcodeInput('');
+    }
+  };
+
+  const handleBarcodeSubmit = async (e) => {
+    e.preventDefault();
+    if (!barcodeInput.trim()) return;
+
+    await addProductToCart(barcodeInput);
+    setBarcodeInput('');
+    barcodeRef.current?.focus();
+  };
+
+  const startBarcodeScanner = () => {
+    setScannerDialogOpen(true);
+    setCameraError('');
+    
+    setTimeout(() => {
+      try {
+        const html5QrCode = new Html5Qrcode("pos-barcode-scanner-region");
+        
+        const config = {
+          fps: 10,
+          qrbox: { width: 250, height: 250 },
+          formatsToSupport: [0, 8, 9, 10, 11, 13, 14, 15]
+        };
+        
+        const qrCodeSuccessCallback = (decodedText) => {
+          console.log('Barcode scanned in POS:', decodedText);
+          
+          if (scannerRef.current) {
+            scannerRef.current.stop().then(() => {
+              scannerRef.current = null;
+              setScannerDialogOpen(false);
+              addProductToCart(decodedText);
+              barcodeRef.current?.focus();
+            }).catch(err => {
+              console.error('Stop error:', err);
+              scannerRef.current = null;
+              setScannerDialogOpen(false);
+              addProductToCart(decodedText);
+            });
+          }
+        };
+        
+        const qrCodeErrorCallback = () => {};
+        
+        html5QrCode.start(
+          { facingMode: "environment" },
+          config,
+          qrCodeSuccessCallback,
+          qrCodeErrorCallback
+        ).then(() => {
+          console.log('✅ POS Camera started');
+          scannerRef.current = html5QrCode;
+          setCameraError('');
+        }).catch((err) => {
+          console.warn('❌ Back camera failed:', err.message);
+          html5QrCode.start(
+            { facingMode: "user" },
+            config,
+            qrCodeSuccessCallback,
+            qrCodeErrorCallback
+          ).then(() => {
+            scannerRef.current = html5QrCode;
+            setCameraError('');
+          }).catch((err2) => {
+            Html5Qrcode.getCameras().then(devices => {
+              if (devices && devices.length > 0) {
+                html5QrCode.start(devices[0].id, config, qrCodeSuccessCallback, qrCodeErrorCallback)
+                  .then(() => { scannerRef.current = html5QrCode; setCameraError(''); })
+                  .catch(() => { setCameraError('Kamera açılamadı'); toast.error('Kamera izni gerekli!'); });
+              } else {
+                setCameraError('Kamera bulunamadı');
+                toast.error('Kamera bulunamadı!');
+              }
+            }).catch(() => {
+              setCameraError('Kamera erişimi reddedildi');
+              toast.error('Kamera iznini kontrol edin!');
+            });
+          });
+        });
+      } catch (error) {
+        console.error('Scanner error:', error);
+        setCameraError('Barkod okuyucu başlatılamadı');
+        toast.error('Bir hata oluştu!');
+      }
+    }, 500);
+  };
+
+  const stopBarcodeScanner = () => {
+    if (scannerRef.current) {
+      scannerRef.current.stop()
+        .then(() => {
+          scannerRef.current = null;
+          setScannerDialogOpen(false);
+        })
+        .catch(err => {
+          console.error(err);
+          scannerRef.current = null;
+          setScannerDialogOpen(false);
+        });
+    } else {
+      setScannerDialogOpen(false);
     }
   };
 
