@@ -241,6 +241,15 @@ function POS() {
                   className="barcode-focus"
                   data-testid="barcode-input"
                 />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={startBarcodeScanner}
+                  title="Kamera ile Barkod Tara"
+                >
+                  <Camera className="w-4 h-4" />
+                </Button>
                 <Button type="submit" data-testid="barcode-submit-btn">Ekle</Button>
               </form>
             </CardContent>
