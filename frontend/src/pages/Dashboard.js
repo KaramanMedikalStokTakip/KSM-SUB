@@ -8,7 +8,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { Package, TrendingDown, DollarSign, ShoppingCart, AlertCircle, Search } from 'lucide-react';
+import { Package, TrendingDown, DollarSign, ShoppingCart, AlertCircle, Search, Camera } from 'lucide-react';
+import { Html5Qrcode } from 'html5-qrcode';
 
 const COLORS = ['#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'];
 
@@ -21,7 +22,10 @@ function Dashboard() {
   const [barcodeSearch, setBarcodeSearch] = useState('');
   const [foundProduct, setFoundProduct] = useState(null);
   const [searching, setSearching] = useState(false);
+  const [scannerDialogOpen, setScannerDialogOpen] = useState(false);
+  const [cameraError, setCameraError] = useState('');
   const searchInputRef = useRef(null);
+  const scannerRef = useRef(null);
 
   useEffect(() => {
     fetchDashboardData();
