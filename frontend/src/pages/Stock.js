@@ -650,12 +650,35 @@ function Stock() {
                     <label className="cursor-pointer">
                       <div className="border-2 border-dashed rounded-md p-4 hover:border-blue-500 transition-colors">
                         <Upload className="w-6 h-6 mx-auto text-gray-400" />
-                        <p className="text-xs text-gray-500 mt-2">Görsel seç</p>
+                        <p className="text-xs text-gray-500 mt-2">Dosya seç</p>
                       </div>
                       <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" data-testid="product-image-input" />
                     </label>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={startCamera}
+                      className="h-[72px] px-4"
+                      title="Kamera ile çek"
+                    >
+                      <div className="flex flex-col items-center">
+                        <Camera className="w-6 h-6 text-gray-400" />
+                        <p className="text-xs text-gray-500 mt-1">Kamera</p>
+                      </div>
+                    </Button>
                     {formData.image_base64 && (
-                      <img src={formData.image_base64} alt="Preview" className="w-20 h-20 object-cover rounded-md" />
+                      <div className="relative">
+                        <img src={formData.image_base64} alt="Preview" className="w-20 h-20 object-cover rounded-md" />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          className="absolute -top-2 -right-2 w-6 h-6"
+                          onClick={() => setFormData({ ...formData, image_base64: '' })}
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
                     )}
                   </div>
                 </div>
