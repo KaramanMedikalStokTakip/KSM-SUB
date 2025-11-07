@@ -937,14 +937,18 @@ function Stock() {
                           }`}>
                             ₺{result.price.toFixed(2)}
                           </p>
-                          <a 
-                            href={result.url} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 text-sm underline whitespace-nowrap px-2 py-1"
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              window.open(result.url, '_blank', 'noopener,noreferrer');
+                            }}
+                            className="text-blue-600 hover:text-blue-800 text-sm whitespace-nowrap"
                           >
                             Siteye Git →
-                          </a>
+                          </Button>
                         </div>
                       </div>
                     ))
