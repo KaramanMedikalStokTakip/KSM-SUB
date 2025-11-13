@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Stok Yönetimi ve Dashboard İyileştirmeleri: 1) Stok yönetiminde ürün görseline tıklandığında detaylı pop-up gösterme (tam görsel + açıklama), 2) Dashboard'da barkod ile bulunan ürün görselinin tam boyut gösterimi, 3) Dark mode açıklama okunabilirlik düzeltmesi, 4) Düşük stok kartı uyarı sistemi"
+user_problem_statement: "UI İyileştirmeleri: 1) Stok yönetimi sayfasında ürün görseline tıklandığında karanlık temadayken ürün açıklaması okunmuyor - zemin ve yazı rengi güncellenmeli, 2) Sayfanın sağ alt kısmında bulunan 'made in emergent' yazısı mobilde birçok şeyin üstüne kapatıyor - kaldırılması lazım, 3) Raporlar kısmında çok satanlar/karlılar gibi sekmelerin karanlık temada hangisi seçildiği belli olmuyor - zemin rengi düzenlenmeli"
 
 backend:
   - task: "PWA Backend Hazırlık (Değişiklik Yok)"
