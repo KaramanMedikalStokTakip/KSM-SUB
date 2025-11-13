@@ -199,8 +199,8 @@ function Login() {
             </div>
           </div>
 
-          {/* Remember Me & Forgot Password */}
-          <div className="flex justify-between items-center text-sm">
+          {/* Remember Me */}
+          <div className="flex justify-start items-center text-sm">
             <label className={`flex items-center cursor-pointer transition-colors ${
               isDarkMode
                 ? 'text-gray-300 hover:text-blue-400'
@@ -215,16 +215,6 @@ function Login() {
               />
               Beni Hatırla
             </label>
-            <a 
-              href="#" 
-              className={`font-semibold transition-colors ${
-                isDarkMode
-                  ? 'text-blue-400 hover:text-blue-300'
-                  : 'text-blue-600 hover:text-blue-700'
-              }`}
-            >
-              Şifremi Unuttum?
-            </a>
           </div>
 
           {/* Submit Button */}
