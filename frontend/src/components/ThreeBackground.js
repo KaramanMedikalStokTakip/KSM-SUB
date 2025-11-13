@@ -81,7 +81,6 @@ function ThreeBackground({ isDark = false }) {
       // Check if refs still exist
       if (!sceneRef.current || !particlesMeshRef.current || !linesMeshRef.current || 
           !rendererRef.current || !cameraRef.current) {
-        console.log('Animation stopped - refs are null');
         return;
       }
 
