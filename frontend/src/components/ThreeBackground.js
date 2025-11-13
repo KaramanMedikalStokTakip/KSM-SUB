@@ -146,7 +146,13 @@ function ThreeBackground({ isDark = false }) {
     isAnimatingRef.current = true;
     document.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('resize', handleResize);
-    animate();
+    
+    // Start animation with a small delay to ensure all refs are populated
+    setTimeout(() => {
+      if (isAnimatingRef.current) {
+        animate();
+      }
+    }, 100);
 
     // Cleanup
     return () => {
