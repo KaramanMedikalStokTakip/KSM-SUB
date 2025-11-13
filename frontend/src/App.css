@@ -516,3 +516,25 @@ body.dark-mode [aria-label="Kapat"] {
 body.dark-mode [aria-label="Kapat"]:hover {
   background-color: rgba(255, 255, 255, 0.1) !important;
 }
+
+/* Dialog Modal Kapatma Butonları - X butonları */
+button[aria-label="Close"],
+[role="dialog"] button[type="button"]:has(svg) {
+  background-color: transparent !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body.dark-mode button[aria-label="Close"],
+body.dark-mode [role="dialog"] button[type="button"]:has(svg) {
+  background-color: transparent !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body.dark-mode button[aria-label="Close"]:hover,
+body.dark-mode [role="dialog"] button[type="button"]:has(svg):hover {
+  background-color: rgba(75, 85, 99, 0.5) !important;
+}
