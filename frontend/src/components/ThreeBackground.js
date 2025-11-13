@@ -34,7 +34,6 @@ function ThreeBackground({ isDark = false }) {
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
       containerRef.current.appendChild(renderer.domElement);
-      console.log('✅ Three.js Renderer initialized');
 
       // Particles
       const particlesGeometry = new THREE.BufferGeometry();
