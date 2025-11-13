@@ -78,8 +78,8 @@ function Login() {
         ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' 
         : 'bg-gradient-to-br from-blue-50 via-white to-blue-50'
     }`}>
-      {/* Three.js Background */}
-      <ThreeBackground isDark={isDarkMode} />
+      {/* CSS Particle Background */}
+      <CSSParticleBackground isDark={isDarkMode} />
 
       {/* Theme Toggle Button */}
       <button
