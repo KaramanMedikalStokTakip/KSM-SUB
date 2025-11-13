@@ -135,7 +135,7 @@ function Login() {
 
       {/* PWA Install Banner */}
       {showPWABanner && (
-        <div className="fixed top-4 left-4 right-4 md:left-auto md:right-4 md:max-w-md z-50 animate-in slide-in-from-top duration-500">
+        <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-md z-50 animate-in slide-in-from-bottom duration-500">
           <div className={`rounded-xl shadow-2xl p-4 backdrop-blur-xl transition-all duration-300 ${
             isDarkMode
               ? 'bg-gradient-to-r from-blue-600/90 to-purple-600/90 border border-blue-500/30'
