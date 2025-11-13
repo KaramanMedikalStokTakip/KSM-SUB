@@ -24,6 +24,7 @@ function Dashboard() {
   const [searching, setSearching] = useState(false);
   const [scannerDialogOpen, setScannerDialogOpen] = useState(false);
   const [cameraError, setCameraError] = useState('');
+  const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
   const searchInputRef = useRef(null);
   const scannerRef = useRef(null);
 
