@@ -14,6 +14,11 @@ function ThreeBackground({ isDark = false }) {
 
   useEffect(() => {
     if (!containerRef.current) return;
+    
+    // Prevent double initialization in StrictMode
+    if (sceneRef.current) {
+      return;
+    }
 
     // Initialize Three.js scene
     const init = () => {
