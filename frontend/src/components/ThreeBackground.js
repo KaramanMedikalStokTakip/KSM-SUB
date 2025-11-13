@@ -167,9 +167,12 @@ function ThreeBackground({ isDark = false }) {
     document.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('resize', handleResize);
     
+    console.log('ThreeBackground initialized, starting animation...');
+    
     // Start animation with a small delay to ensure everything is ready
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
+        console.log('Animation loop starting now');
         animate();
       });
     });
