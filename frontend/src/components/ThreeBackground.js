@@ -16,11 +16,8 @@ function ThreeBackground({ isDark = false }) {
 
     // Check if already initialized (prevent double init in StrictMode)
     if (sceneRef.current) {
-      console.log('Already initialized, skipping');
       return;
     }
-
-    console.log('Initializing ThreeBackground...');
 
     // Scene
     sceneRef.current = new THREE.Scene();
