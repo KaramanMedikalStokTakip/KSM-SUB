@@ -17,6 +17,8 @@ function Login() {
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [showPWABanner, setShowPWABanner] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
 
   // Check for dark mode on load
   useEffect(() => {
