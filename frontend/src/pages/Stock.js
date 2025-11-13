@@ -776,7 +776,13 @@ function Stock() {
             <Card key={product.id} className="card-hover" data-testid={`product-card-${product.id}`}>
               <CardContent className="pt-6">
                 {product.image_url && (
-                  <img src={product.image_url} alt={product.name} className="w-full h-40 object-cover rounded-md mb-3" />
+                  <img 
+                    src={product.image_url} 
+                    alt={product.name} 
+                    className="w-full h-40 object-cover rounded-md mb-3 cursor-pointer hover:opacity-80 transition-opacity" 
+                    onClick={() => openProductDetail(product)}
+                    title="Detayları görmek için tıklayın"
+                  />
                 )}
                 <h3 
                   className="font-semibold text-lg text-gray-800 mb-1 cursor-pointer hover:text-blue-600 transition-colors"
