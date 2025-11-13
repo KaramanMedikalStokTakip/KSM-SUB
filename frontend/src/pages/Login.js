@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
-import { Eye, EyeOff, UserCircle2, Moon, Sun } from 'lucide-react';
+import { Eye, EyeOff, UserCircle2, Moon, Sun, Download, X } from 'lucide-react';
 import ParticleNetworkAnimation from '../components/ParticleNetworkAnimation';
 
 function Login() {
