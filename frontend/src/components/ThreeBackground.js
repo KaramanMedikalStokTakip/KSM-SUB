@@ -84,11 +84,12 @@ function ThreeBackground({ isDark = false }) {
         return;
       }
 
+      // Request next frame FIRST to ensure continuous animation
       animationIdRef.current = requestAnimationFrame(animate);
 
-      // Rotate particles
-      particlesMeshRef.current.rotation.x += 0.001;
-      particlesMeshRef.current.rotation.y += 0.001;
+      // Rotate particles - increased speed for visible animation
+      particlesMeshRef.current.rotation.x += 0.005;
+      particlesMeshRef.current.rotation.y += 0.005;
 
       // Mouse interaction
       cameraRef.current.position.x += (mouseRef.current.x * 0.5 - cameraRef.current.position.x) * 0.05;
