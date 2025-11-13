@@ -32,12 +32,41 @@ function Customers() {
     fetchCustomers();
   }, []);
 
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      handleSearch();
+    } else {
+      setFilteredCustomers(customers);
+    }
+  }, [searchQuery, customers]);
+
   const fetchCustomers = async () => {
     try {
       const response = await axios.get(`${API}/customers`);
       setCustomers(response.data);
+      setFilteredCustomers(response.data);
     } catch (error) {
       toast.error('Müşteriler yüklenemedi');
+    }
+  };
+
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) {
+      setFilteredCustomers(customers);
+      return;
+    }
+
+    setIsSearching(true);
+    try {
+      const response = await axios.get(`${API}/customers/search`, {
+        params: { q: searchQuery }
+      });
+      setFilteredCustomers(response.data);
+    } catch (error) {
+      toast.error('Arama başarısız');
+      setFilteredCustomers(customers);
+    } finally {
+      setIsSearching(false);
     }
   };
 
