@@ -213,6 +213,9 @@ frontend:
         - working: true
           agent: "main"
           comment: "Ürün görsellerine tıklanabilirlik eklendi. Tıklandığında tam boyut görsel, detaylı ürün bilgileri, tam açıklama metni ve aksiyon butonları içeren pop-up açılıyor. Dark mode desteği eklendi (açıklama alanı için dark:bg-blue-900/20, dark:text-gray-300)."
+        - working: true
+          agent: "main"
+          comment: "DARK MODE OKUNABILIRLIK İYILEŞTİRMESİ: Açıklama bölümünün dark mode renkleri güçlendirildi. Arka plan: dark:bg-gray-800 (koyu gri), border: dark:border-gray-700, başlık: dark:text-white, metin: dark:text-gray-100. Artık karanlık temada açıklama metni tam okunuyor."
 
   - task: "Dashboard - Ürün Bul Görsel İyileştirmesi"
     implemented: true
