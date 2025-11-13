@@ -132,6 +132,56 @@ function Login() {
       {/* Particle Network Animation */}
       <ParticleNetworkAnimation isDark={isDarkMode} />
 
+      {/* PWA Install Banner */}
+      {showPWABanner && (
+        <div className="fixed top-4 left-4 right-4 md:left-auto md:right-4 md:max-w-md z-50 animate-in slide-in-from-top duration-500">
+          <div className={`rounded-xl shadow-2xl p-4 backdrop-blur-xl transition-all duration-300 ${
+            isDarkMode
+              ? 'bg-gradient-to-r from-blue-600/90 to-purple-600/90 border border-blue-500/30'
+              : 'bg-gradient-to-r from-blue-500/95 to-purple-500/95'
+          }`}>
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                <Download className="w-5 h-5 text-white" />
+              </div>
+              
+              <div className="flex-1 min-w-0">
+                <h3 className="font-bold text-white text-sm mb-1">
+                  📱 Mobil Uygulama Olarak Kullanın!
+                </h3>
+                <p className="text-xs text-white/90 mb-3">
+                  Bu uygulamayı cihazınıza kurun. Daha hızlı erişim, offline çalışma ve bildirimler!
+                </p>
+                
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleInstallPWA}
+                    className="flex items-center gap-1.5 bg-white text-blue-600 px-3 py-2 rounded-lg text-xs font-bold hover:bg-white/90 transition-all hover:scale-105 shadow-lg"
+                  >
+                    <Download className="w-4 h-4" />
+                    Şimdi Kur
+                  </button>
+                  <button
+                    onClick={handleDismissPWA}
+                    className="text-xs text-white/90 hover:text-white px-3 py-2 transition-colors font-medium"
+                  >
+                    Daha Sonra
+                  </button>
+                </div>
+              </div>
+              
+              <button
+                onClick={handleDismissPWA}
+                className="flex-shrink-0 text-white/80 hover:text-white transition-colors"
+                aria-label="Kapat"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Theme Toggle Button */}
       <button
         onClick={toggleTheme}
