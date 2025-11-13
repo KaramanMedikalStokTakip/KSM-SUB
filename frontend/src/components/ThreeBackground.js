@@ -93,6 +93,11 @@ function ThreeBackground({ isDark = false }) {
 
     // Animation loop with proper line updates
     const animate = () => {
+      // Check if cleaned up before continuing animation
+      if (isCleanedUpRef.current) {
+        return;
+      }
+
       animationIdRef.current = requestAnimationFrame(animate);
 
       // Smooth rotation
