@@ -102,9 +102,9 @@ function Reports() {
       </Card>
 
       <Tabs defaultValue="selling" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="selling">En Çok Satanlar</TabsTrigger>
-          <TabsTrigger value="profit">En Kârlılar</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 reports-tabs-list">
+          <TabsTrigger value="selling" className="reports-tab-trigger">En Çok Satanlar</TabsTrigger>
+          <TabsTrigger value="profit" className="reports-tab-trigger">En Kârlılar</TabsTrigger>
         </TabsList>
 
         <TabsContent value="selling" className="space-y-4">
