@@ -192,6 +192,17 @@ function ThreeBackground({ isDark = false }) {
       sceneRef.current = null;
       cameraRef.current = null;
     };
+  }, []); // Empty dependency - only initialize once
+
+  // Update colors when theme changes (without recreating the scene)
+  useEffect(() => {
+    if (particlesMeshRef.current && linesMeshRef.current) {
+      const particleColor = isDark ? 0x60a5fa : 0x3b82f6;
+      particlesMeshRef.current.material.color.setHex(particleColor);
+      particlesMeshRef.current.material.opacity = isDark ? 0.6 : 0.8;
+      linesMeshRef.current.material.color.setHex(particleColor);
+      linesMeshRef.current.material.opacity = isDark ? 0.1 : 0.15;
+    }
   }, [isDark]);
 
   return (
