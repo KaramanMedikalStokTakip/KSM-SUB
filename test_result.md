@@ -252,6 +252,9 @@ frontend:
         - working: true
           agent: "main"
           comment: "ÜÇÜNCÜ DÜZELTME: Kullanıcı geri bildirimi sonrası daha kapsamlı CSS kuralları eklendi. Tabs component'inde bg-muted, text-muted-foreground, bg-background ve text-foreground sınıfları için dark mode renkleri tanımlandı. TabsList arka planı #2d2d2d, aktif olmayan butonlar #9ca3af, aktif buton #2563eb mavi arka plan ve #ffffff beyaz yazı. Hover efekti de eklendi."
+        - working: true
+          agent: "main"
+          comment: "DÖRDÜNCÜ DÜZELTME: Kullanıcı görsel geri bildirimi sonrası çok daha agresif ve spesifik CSS kuralları eklendi. Reports.js'te TabsList ve TabsTrigger'a özel class'lar eklendi (reports-tabs-list, reports-tab-trigger). App.css'te bu class'lar için özel kurallar: TabsList arka plan #374151 (koyu gri) + border, aktif sekme #3b82f6 (parlak mavi) + beyaz yazı + gölge, inaktif #9ca3af gri yazı. Artık mutlaka görünür olmalı."
 
   - task: "Dashboard - Ürün Bul Görsel İyileştirmesi"
     implemented: true
