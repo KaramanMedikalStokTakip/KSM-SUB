@@ -3,85 +3,34 @@ import * as THREE from 'three';
 
 function ThreeBackground({ isDark = false }) {
   const containerRef = useRef(null);
-  const sceneRef = useRef(null);
-  const cameraRef = useRef(null);
-  const rendererRef = useRef(null);
-  const particlesMeshRef = useRef(null);
-  const linesMeshRef = useRef(null);
   const animationIdRef = useRef(null);
   const mouseRef = useRef({ x: 0, y: 0 });
-  const isAnimatingRef = useRef(false);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Check if already initialized (prevent double init in StrictMode)
-    if (sceneRef.current) {
-      // Scene already exists, just restart animation
-      if (!isAnimatingRef.current && animationIdRef.current === null) {
-        isAnimatingRef.current = true;
-        const animate = () => {
-          if (!isAnimatingRef.current) return;
-          if (!sceneRef.current || !particlesMeshRef.current || !linesMeshRef.current || 
-              !rendererRef.current || !cameraRef.current) return;
-          
-          animationIdRef.current = requestAnimationFrame(animate);
-          
-          particlesMeshRef.current.rotation.x += 0.005;
-          particlesMeshRef.current.rotation.y += 0.005;
-          
-          cameraRef.current.position.x += (mouseRef.current.x * 0.5 - cameraRef.current.position.x) * 0.05;
-          cameraRef.current.position.y += (-mouseRef.current.y * 0.5 - cameraRef.current.position.y) * 0.05;
-          cameraRef.current.lookAt(sceneRef.current.position);
-          
-          const positions = particlesMeshRef.current.geometry.attributes.position.array;
-          const linePositions = [];
-          const particlesCount = positions.length / 3;
-          
-          for (let i = 0; i < particlesCount; i++) {
-            for (let j = i + 1; j < particlesCount; j++) {
-              const x1 = positions[i * 3];
-              const y1 = positions[i * 3 + 1];
-              const z1 = positions[i * 3 + 2];
-              const x2 = positions[j * 3];
-              const y2 = positions[j * 3 + 1];
-              const z2 = positions[j * 3 + 2];
-              const dist = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + Math.pow(z1 - z2, 2));
-              if (dist < 120) {
-                linePositions.push(x1, y1, z1, x2, y2, z2);
-              }
-            }
-          }
-          
-          linesMeshRef.current.geometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
-          linesMeshRef.current.rotation.copy(particlesMeshRef.current.rotation);
-          rendererRef.current.render(sceneRef.current, cameraRef.current);
-        };
-        animate();
-      }
-      return;
-    }
+    let scene, camera, renderer, particlesMesh, linesMesh;
 
     // Scene
-    sceneRef.current = new THREE.Scene();
+    scene = new THREE.Scene();
 
     // Camera
-    cameraRef.current = new THREE.PerspectiveCamera(
+    camera = new THREE.PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
       1,
       1000
     );
-    cameraRef.current.position.z = 400;
+    camera.position.z = 400;
 
     // Renderer
-    rendererRef.current = new THREE.WebGLRenderer({ 
+    renderer = new THREE.WebGLRenderer({ 
       alpha: true, 
       antialias: true 
     });
-    rendererRef.current.setSize(window.innerWidth, window.innerHeight);
-    rendererRef.current.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    containerRef.current.appendChild(rendererRef.current.domElement);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    containerRef.current.appendChild(renderer.domElement);
 
     // Particles
     const particlesGeometry = new THREE.BufferGeometry();
@@ -105,8 +54,8 @@ function ThreeBackground({ isDark = false }) {
       opacity: isDark ? 0.6 : 0.8,
     });
 
-    particlesMeshRef.current = new THREE.Points(particlesGeometry, particlesMaterial);
-    sceneRef.current.add(particlesMeshRef.current);
+    particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particlesMesh);
 
     // Lines
     const linesMaterial = new THREE.LineBasicMaterial({
@@ -116,36 +65,24 @@ function ThreeBackground({ isDark = false }) {
     });
 
     const linesGeometry = new THREE.BufferGeometry();
-    linesMeshRef.current = new THREE.LineSegments(linesGeometry, linesMaterial);
-    sceneRef.current.add(linesMeshRef.current);
+    linesMesh = new THREE.LineSegments(linesGeometry, linesMaterial);
+    scene.add(linesMesh);
 
     // Animation loop
     const animate = () => {
-      // Check if animation should continue
-      if (!isAnimatingRef.current) {
-        return;
-      }
-
-      // Check if refs still exist
-      if (!sceneRef.current || !particlesMeshRef.current || !linesMeshRef.current || 
-          !rendererRef.current || !cameraRef.current) {
-        return;
-      }
-
-      // Request next frame FIRST to ensure continuous animation
       animationIdRef.current = requestAnimationFrame(animate);
 
-      // Rotate particles - increased speed for visible animation
-      particlesMeshRef.current.rotation.x += 0.005;
-      particlesMeshRef.current.rotation.y += 0.005;
+      // Rotate particles
+      particlesMesh.rotation.x += 0.005;
+      particlesMesh.rotation.y += 0.005;
 
       // Mouse interaction
-      cameraRef.current.position.x += (mouseRef.current.x * 0.5 - cameraRef.current.position.x) * 0.05;
-      cameraRef.current.position.y += (-mouseRef.current.y * 0.5 - cameraRef.current.position.y) * 0.05;
-      cameraRef.current.lookAt(sceneRef.current.position);
+      camera.position.x += (mouseRef.current.x * 0.5 - camera.position.x) * 0.05;
+      camera.position.y += (-mouseRef.current.y * 0.5 - camera.position.y) * 0.05;
+      camera.lookAt(scene.position);
 
       // Update lines
-      const positions = particlesMeshRef.current.geometry.attributes.position.array;
+      const positions = particlesMesh.geometry.attributes.position.array;
       const linePositions = [];
       const particlesCount = positions.length / 3;
 
@@ -171,13 +108,13 @@ function ThreeBackground({ isDark = false }) {
         }
       }
 
-      linesMeshRef.current.geometry.setAttribute(
+      linesMesh.geometry.setAttribute(
         'position',
         new THREE.Float32BufferAttribute(linePositions, 3)
       );
-      linesMeshRef.current.rotation.copy(particlesMeshRef.current.rotation);
+      linesMesh.rotation.copy(particlesMesh.rotation);
 
-      rendererRef.current.render(sceneRef.current, cameraRef.current);
+      renderer.render(scene, camera);
     };
 
     // Mouse move handler
@@ -188,11 +125,9 @@ function ThreeBackground({ isDark = false }) {
 
     // Resize handler
     const handleResize = () => {
-      if (cameraRef.current && rendererRef.current) {
-        cameraRef.current.aspect = window.innerWidth / window.innerHeight;
-        cameraRef.current.updateProjectionMatrix();
-        rendererRef.current.setSize(window.innerWidth, window.innerHeight);
-      }
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
     };
 
     // Add event listeners
@@ -200,61 +135,40 @@ function ThreeBackground({ isDark = false }) {
     window.addEventListener('resize', handleResize);
 
     // Start animation
-    isAnimatingRef.current = true;
     animate();
 
     // Cleanup function
     return () => {
-      isAnimatingRef.current = false;
-      
       document.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
       
       if (animationIdRef.current) {
         cancelAnimationFrame(animationIdRef.current);
-        animationIdRef.current = null;
       }
 
-      if (containerRef.current && rendererRef.current && rendererRef.current.domElement) {
+      if (containerRef.current && renderer && renderer.domElement) {
         try {
-          containerRef.current.removeChild(rendererRef.current.domElement);
+          containerRef.current.removeChild(renderer.domElement);
         } catch (e) {
           // Element might already be removed
         }
       }
 
-      if (rendererRef.current) {
-        rendererRef.current.dispose();
-        rendererRef.current = null;
+      if (renderer) {
+        renderer.dispose();
       }
       
-      if (particlesMeshRef.current) {
-        particlesMeshRef.current.geometry.dispose();
-        particlesMeshRef.current.material.dispose();
-        particlesMeshRef.current = null;
+      if (particlesMesh) {
+        particlesMesh.geometry.dispose();
+        particlesMesh.material.dispose();
       }
       
-      if (linesMeshRef.current) {
-        linesMeshRef.current.geometry.dispose();
-        linesMeshRef.current.material.dispose();
-        linesMeshRef.current = null;
+      if (linesMesh) {
+        linesMesh.geometry.dispose();
+        linesMesh.material.dispose();
       }
-      
-      sceneRef.current = null;
-      cameraRef.current = null;
     };
-  }, []); // Empty dependency - only initialize once
-
-  // Update colors when theme changes (without recreating the scene)
-  useEffect(() => {
-    if (particlesMeshRef.current && linesMeshRef.current) {
-      const particleColor = isDark ? 0x60a5fa : 0x3b82f6;
-      particlesMeshRef.current.material.color.setHex(particleColor);
-      particlesMeshRef.current.material.opacity = isDark ? 0.6 : 0.8;
-      linesMeshRef.current.material.color.setHex(particleColor);
-      linesMeshRef.current.material.opacity = isDark ? 0.1 : 0.15;
-    }
-  }, [isDark]);
+  }, [isDark]); // Re-create on theme change
 
   return (
     <div
