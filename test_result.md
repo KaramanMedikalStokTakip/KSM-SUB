@@ -277,7 +277,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Stok Yönetimi - Ürün Detay Pop-up"
+    - "Stok Yönetimi - Ürün Detay Pop-up Dark Mode İyileştirmesi"
+    - "Made with Emergent Badge Kaldırma"
+    - "Raporlar Sekmelerinde Dark Mode İyileştirmesi"
     - "Dashboard - Ürün Bul Görsel İyileştirmesi"
     - "Dashboard - Düşük Stok Kartı Uyarı Sistemi"
   stuck_tasks: []
