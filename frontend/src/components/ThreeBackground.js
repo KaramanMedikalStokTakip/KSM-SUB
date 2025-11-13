@@ -5,6 +5,7 @@ function ThreeBackground({ isDark = false }) {
   const containerRef = useRef(null);
   const animationRef = useRef(null);
   const hasInitialized = useRef(false);
+  const isRunningRef = useRef(false);
 
   useEffect(() => {
     if (!containerRef.current) {
@@ -22,9 +23,9 @@ function ThreeBackground({ isDark = false }) {
     }
     
     hasInitialized.current = true;
+    isRunningRef.current = true;
     
     let scene, camera, renderer, particlesMesh, linesMesh;
-    let isRunning = true;
 
     // Initialize Three.js scene
     const init = () => {
