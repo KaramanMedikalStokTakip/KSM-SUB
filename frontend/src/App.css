@@ -445,3 +445,28 @@ body.dark-mode div[role="tablist"] button[role="tab"]:hover:not([data-state="act
   background-color: #4b5563 !important;
   color: #e5e7eb !important;
 }
+
+/* Raporlar sayfası özel tabs - Ekstra spesifik */
+body.dark-mode .reports-tabs-list {
+  background-color: #374151 !important;
+  border: 1px solid #4b5563 !important;
+  padding: 4px !important;
+}
+
+body.dark-mode .reports-tab-trigger {
+  color: #9ca3af !important;
+  background-color: transparent !important;
+  transition: all 0.2s !important;
+}
+
+body.dark-mode .reports-tab-trigger[data-state="active"] {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.5) !important;
+}
+
+body.dark-mode .reports-tab-trigger:hover:not([data-state="active"]) {
+  background-color: #4b5563 !important;
+  color: #e5e7eb !important;
+}
