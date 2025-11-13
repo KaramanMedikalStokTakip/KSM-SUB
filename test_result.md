@@ -249,6 +249,9 @@ frontend:
         - working: true
           agent: "main"
           comment: "İKİNCİ DÜZELTME: Proje CSS body.dark-mode kullanıyor, Tailwind dark mode değil. App.css'e CSS kuralı eklendi: body.dark-mode [role='tablist'] button[data-state='active'] { background-color: #2563eb (mavi); color: #ffffff (beyaz); font-weight: 600 }. Aktif sekme artık parlak mavi arka plan ve beyaz yazı ile belirgin."
+        - working: true
+          agent: "main"
+          comment: "ÜÇÜNCÜ DÜZELTME: Kullanıcı geri bildirimi sonrası daha kapsamlı CSS kuralları eklendi. Tabs component'inde bg-muted, text-muted-foreground, bg-background ve text-foreground sınıfları için dark mode renkleri tanımlandı. TabsList arka planı #2d2d2d, aktif olmayan butonlar #9ca3af, aktif buton #2563eb mavi arka plan ve #ffffff beyaz yazı. Hover efekti de eklendi."
 
   - task: "Dashboard - Ürün Bul Görsel İyileştirmesi"
     implemented: true
