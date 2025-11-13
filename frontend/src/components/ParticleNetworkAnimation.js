@@ -87,7 +87,7 @@ function ParticleNetworkAnimation({ isDark = false }) {
     // Create particles
     const initParticles = () => {
       particles = [];
-      for (let i = 0; i < 220; i++) {
+      for (let i = 0; i < 60; i++) {
         particles.push(new Particle());
       }
       particlesRef.current = particles;
@@ -96,7 +96,7 @@ function ParticleNetworkAnimation({ isDark = false }) {
 
     // Connect particles with lines
     const connectParticles = () => {
-      const maxDistance = 200;
+      const maxDistance = 120;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
