@@ -243,11 +243,153 @@ function Reports() {
         </CardContent>
       </Card>
 
-      <Tabs defaultValue="selling" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 reports-tabs-list">
+      <Tabs defaultValue="stock" className="w-full">
+        <TabsList className="grid w-full grid-cols-3 reports-tabs-list">
+          <TabsTrigger value="stock" className="reports-tab-trigger">Stok Raporu</TabsTrigger>
           <TabsTrigger value="selling" className="reports-tab-trigger">En Çok Satanlar</TabsTrigger>
           <TabsTrigger value="profit" className="reports-tab-trigger">En Kârlılar</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="stock" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Filtreleme Seçenekleri</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label>Marka</Label>
+                  <select
+                    className="w-full border rounded-md px-3 py-2"
+                    value={selectedBrand}
+                    onChange={(e) => setSelectedBrand(e.target.value)}
+                  >
+                    <option value="">Tümü</option>
+                    {brands.map(brand => (
+                      <option key={brand} value={brand}>{brand}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <Label>Kategori</Label>
+                  <select
+                    className="w-full border rounded-md px-3 py-2"
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                  >
+                    <option value="">Tümü</option>
+                    {categories.map(category => (
+                      <option key={category} value={category}>{category}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <Button 
+                onClick={fetchStockReport} 
+                disabled={loading} 
+                className="mt-4"
+              >
+                {loading ? 'Yükleniyor...' : 'Raporu Oluştur'}
+              </Button>
+            </CardContent>
+          </Card>
+
+          {stockReport && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Stok Raporu Özeti</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <p className="text-sm text-gray-600">Toplam Ürün</p>
+                    <p className="text-2xl font-bold text-blue-600">{stockReport.summary.total_products}</p>
+                  </div>
+                  <div className="bg-green-50 p-4 rounded-lg">
+                    <p className="text-sm text-gray-600">Toplam Adet</p>
+                    <p className="text-2xl font-bold text-green-600">{stockReport.summary.total_items}</p>
+                  </div>
+                  <div className="bg-purple-50 p-4 rounded-lg">
+                    <p className="text-sm text-gray-600">Toplam Değer</p>
+                    <p className="text-2xl font-bold text-purple-600">₺{stockReport.summary.total_value.toFixed(2)}</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 mb-4 flex-wrap">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => exportToExcel(stockReport.products, 'stok-raporu')}
+                  >
+                    <FileSpreadsheet className="w-4 h-4 mr-2" />
+                    Excel
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => exportToPDF(stockReport.products, 'stok-raporu', 'Stok Yönetim Raporu')}
+                  >
+                    <FileText className="w-4 h-4 mr-2" />
+                    PDF
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => exportToWord(stockReport.products, 'stok-raporu', 'Stok Yönetim Raporu')}
+                  >
+                    <FileType className="w-4 h-4 mr-2" />
+                    Word
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => exportToTxt(stockReport.products, 'stok-raporu', 'Stok Yönetim Raporu')}
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    TXT
+                  </Button>
+                </div>
+
+                <div className="max-h-96 overflow-y-auto">
+                  <table className="w-full text-sm">
+                    <thead className="bg-gray-100 sticky top-0">
+                      <tr>
+                        <th className="p-2 text-left">Ürün Adı</th>
+                        <th className="p-2 text-left">Marka</th>
+                        <th className="p-2 text-left">Kategori</th>
+                        <th className="p-2 text-right">Stok</th>
+                        <th className="p-2 text-right">Birim Fiyat</th>
+                        <th className="p-2 text-right">Toplam Değer</th>
+                        <th className="p-2 text-center">Durum</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {stockReport.products.map((product, idx) => (
+                        <tr key={idx} className="border-b hover:bg-gray-50">
+                          <td className="p-2">{product.name}</td>
+                          <td className="p-2">{product.brand}</td>
+                          <td className="p-2">{product.category}</td>
+                          <td className="p-2 text-right">{product.quantity} {product.unit_type}</td>
+                          <td className="p-2 text-right">₺{product.purchase_price.toFixed(2)}</td>
+                          <td className="p-2 text-right font-semibold">₺{product.stock_value.toFixed(2)}</td>
+                          <td className="p-2 text-center">
+                            <span className={`px-2 py-1 rounded text-xs ${
+                              product.status === 'Düşük Stok' 
+                                ? 'bg-red-100 text-red-700' 
+                                : 'bg-green-100 text-green-700'
+                            }`}>
+                              {product.status}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
 
         <TabsContent value="selling" className="space-y-4">
           <div className="flex gap-2">
