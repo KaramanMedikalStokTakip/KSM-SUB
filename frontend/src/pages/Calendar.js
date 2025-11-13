@@ -110,11 +110,11 @@ function Calendar() {
               </div>
               <div>
                 <Label>Açıklama</Label>
-                <textarea
-                  className="w-full border rounded-md px-3 py-2"
+                <Textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   data-testid="event-description-input"
+                  placeholder="Etkinlik açıklaması"
                 />
               </div>
               <div>
