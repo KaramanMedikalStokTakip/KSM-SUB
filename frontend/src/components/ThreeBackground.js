@@ -151,12 +151,10 @@ function ThreeBackground({ isDark = false }) {
     window.addEventListener('resize', handleResize);
 
     // Start animation
-    console.log('Starting animation loop...');
     animate();
 
     // Cleanup function
     return () => {
-      console.log('Cleanup: Stopping animation and disposing resources');
       
       document.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
