@@ -99,18 +99,116 @@ function Reports() {
   };
 
   const exportToExcel = (data, filename) => {
-    const csvContent = [
-      Object.keys(data[0] || {}).join(','),
-      ...data.map(row => Object.values(row).join(','))
-    ].join('\n');
+    try {
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Rapor');
+      XLSX.writeFile(wb, `${filename}.xlsx`);
+      toast.success('Excel raporu indirildi');
+    } catch (error) {
+      toast.error('Excel dışa aktarma başarısız');
+    }
+  };
 
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${filename}.csv`;
-    a.click();
-    toast.success('Rapor indirildi');
+  const exportToPDF = (data, filename, title) => {
+    try {
+      const doc = new jsPDF();
+      
+      // Başlık ekle
+      doc.setFontSize(16);
+      doc.text(title, 14, 15);
+      
+      // Tarih bilgisi
+      doc.setFontSize(10);
+      doc.text(`Oluşturma Tarihi: ${new Date().toLocaleDateString('tr-TR')}`, 14, 25);
+      
+      // Tablo oluştur
+      const headers = Object.keys(data[0] || {});
+      const rows = data.map(item => Object.values(item));
+      
+      doc.autoTable({
+        head: [headers],
+        body: rows,
+        startY: 30,
+        styles: { font: 'helvetica', fontSize: 8 },
+        headStyles: { fillColor: [59, 130, 246] }
+      });
+      
+      doc.save(`${filename}.pdf`);
+      toast.success('PDF raporu indirildi');
+    } catch (error) {
+      toast.error('PDF dışa aktarma başarısız');
+    }
+  };
+
+  const exportToWord = async (data, filename, title) => {
+    try {
+      const headers = Object.keys(data[0] || {});
+      
+      // Tablo başlık satırı
+      const headerRow = new TableRow({
+        children: headers.map(h => new TableCell({
+          children: [new Paragraph({ text: h, bold: true })],
+          width: { size: 100 / headers.length, type: WidthType.PERCENTAGE }
+        }))
+      });
+      
+      // Veri satırları
+      const dataRows = data.map(item => 
+        new TableRow({
+          children: Object.values(item).map(val => 
+            new TableCell({
+              children: [new Paragraph(String(val || ''))],
+              width: { size: 100 / headers.length, type: WidthType.PERCENTAGE }
+            })
+          )
+        })
+      );
+      
+      const table = new Table({
+        rows: [headerRow, ...dataRows],
+        width: { size: 100, type: WidthType.PERCENTAGE }
+      });
+      
+      const doc = new Document({
+        sections: [{
+          children: [
+            new Paragraph({ text: title, heading: 'Heading1' }),
+            new Paragraph({ text: `Oluşturma Tarihi: ${new Date().toLocaleDateString('tr-TR')}` }),
+            new Paragraph({ text: '' }),
+            table
+          ]
+        }]
+      });
+      
+      const blob = await Packer.toBlob(doc);
+      saveAs(blob, `${filename}.docx`);
+      toast.success('Word raporu indirildi');
+    } catch (error) {
+      toast.error('Word dışa aktarma başarısız');
+    }
+  };
+
+  const exportToTxt = (data, filename, title) => {
+    try {
+      let content = `${title}\n`;
+      content += `Oluşturma Tarihi: ${new Date().toLocaleDateString('tr-TR')}\n`;
+      content += '='.repeat(50) + '\n\n';
+      
+      data.forEach((item, idx) => {
+        content += `${idx + 1}. Kayıt:\n`;
+        Object.entries(item).forEach(([key, value]) => {
+          content += `  ${key}: ${value}\n`;
+        });
+        content += '\n';
+      });
+      
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      saveAs(blob, `${filename}.txt`);
+      toast.success('TXT raporu indirildi');
+    } catch (error) {
+      toast.error('TXT dışa aktarma başarısız');
+    }
   };
 
   return (
