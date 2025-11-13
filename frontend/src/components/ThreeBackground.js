@@ -169,15 +169,22 @@ function ThreeBackground({ isDark = false }) {
 
     // Cleanup
     return () => {
+      isCleanedUpRef.current = true;
+      
       document.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
       
       if (animationIdRef.current) {
         cancelAnimationFrame(animationIdRef.current);
+        animationIdRef.current = null;
       }
       
       if (containerRef.current && renderer && renderer.domElement && containerRef.current.contains(renderer.domElement)) {
-        containerRef.current.removeChild(renderer.domElement);
+        try {
+          containerRef.current.removeChild(renderer.domElement);
+        } catch (e) {
+          console.warn('Canvas element already removed');
+        }
       }
       
       if (renderer) {
@@ -195,6 +202,13 @@ function ThreeBackground({ isDark = false }) {
       if (linesMaterial) {
         linesMaterial.dispose();
       }
+
+      // Clear refs
+      sceneRef.current = null;
+      cameraRef.current = null;
+      rendererRef.current = null;
+      particleMeshRef.current = null;
+      linesMeshRef.current = null;
     };
   }, [isDark]);
 
