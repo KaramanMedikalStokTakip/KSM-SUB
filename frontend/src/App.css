@@ -470,3 +470,49 @@ body.dark-mode .reports-tab-trigger:hover:not([data-state="active"]) {
   background-color: #4b5563 !important;
   color: #e5e7eb !important;
 }
+
+/* Login Şifre Gösterme Butonu - Gri Kutucuk Sorunu Çözümü */
+[data-testid="toggle-password-btn"],
+button[aria-label="Şifreyi göster"],
+button[aria-label="Şifreyi gizle"] {
+  background-color: transparent !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  min-height: unset !important;
+  min-width: unset !important;
+  padding: 4px !important;
+}
+
+body.dark-mode [data-testid="toggle-password-btn"],
+body.dark-mode button[aria-label="Şifreyi göster"],
+body.dark-mode button[aria-label="Şifreyi gizle"] {
+  background-color: transparent !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body.dark-mode [data-testid="toggle-password-btn"]:hover,
+body.dark-mode button[aria-label="Şifreyi göster"]:hover,
+body.dark-mode button[aria-label="Şifreyi gizle"]:hover {
+  background-color: transparent !important;
+  background: none !important;
+}
+
+/* PWA Banner Kapatma Butonu - Gri Kutucuk Sorunu Çözümü */
+[aria-label="Kapat"] {
+  background-color: transparent !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body.dark-mode [aria-label="Kapat"] {
+  background-color: transparent !important;
+  background: none !important;
+}
+
+body.dark-mode [aria-label="Kapat"]:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
