@@ -188,6 +188,49 @@
     color: #ffffff !important;
   }
   
+  /* Calendar dark mode styles */
+  body.dark-mode .rdp {
+    --rdp-cell-size: 56px;
+    --rdp-accent-color: #3b82f6;
+    --rdp-background-color: #2d3748;
+  }
+  
+  body.dark-mode .rdp-day_selected {
+    background-color: #3b82f6 !important;
+    color: #ffffff !important;
+  }
+  
+  body.dark-mode .rdp-day_selected:hover {
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+  }
+  
+  body.dark-mode .rdp-day_today {
+    background-color: rgba(59, 130, 246, 0.2) !important;
+    color: #93c5fd !important;
+    border-color: #3b82f6 !important;
+  }
+  
+  body.dark-mode .rdp-button:hover:not(.rdp-day_selected) {
+    background-color: rgba(59, 130, 246, 0.15) !important;
+  }
+  
+  body.dark-mode .rdp-day {
+    color: #e2e8f0 !important;
+  }
+  
+  body.dark-mode .rdp-day_outside {
+    color: #6b7280 !important;
+  }
+  
+  body.dark-mode .rdp-caption_label {
+    color: #f7fafc !important;
+  }
+  
+  body.dark-mode .rdp-head_cell {
+    color: #9ca3af !important;
+  }
+  
   /* Scrollbars */
   body.dark-mode ::-webkit-scrollbar {
     background-color: #2d3748;
