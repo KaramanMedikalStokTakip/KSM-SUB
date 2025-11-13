@@ -358,6 +358,24 @@ function Dashboard() {
         </DialogContent>
       </Dialog>
 
+      {/* Image Preview Dialog */}
+      <Dialog open={imagePreviewOpen} onOpenChange={setImagePreviewOpen}>
+        <DialogContent className="max-w-4xl max-h-[95vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Ürün Görseli - {foundProduct?.name}</DialogTitle>
+          </DialogHeader>
+          {foundProduct?.image_url && (
+            <div className="relative w-full rounded-lg overflow-hidden bg-gray-100">
+              <img 
+                src={foundProduct.image_url} 
+                alt={foundProduct.name} 
+                className="w-full h-auto max-h-[80vh] object-contain"
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
       {/* Barcode Scanner Dialog */}
       <Dialog open={scannerDialogOpen} onOpenChange={(open) => {
         if (!open) stopBarcodeScanner();
