@@ -38,7 +38,7 @@ function ThreeBackground({ isDark = false }) {
     const posArray = new Float32Array(particlesCount * 3);
 
     for (let i = 0; i < particlesCount * 3; i++) {
-      posArray[i] = (Math.random() - 0.5) * 800;
+      posArray[i] = (Math.random() - 0.5) * 400;
     }
 
     particlesGeometry.setAttribute(
