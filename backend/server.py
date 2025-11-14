@@ -1191,10 +1191,10 @@ async def startup_create_admin():
             
             await db.users.insert_one(admin_user)
             logger.info("✅ Admin kullanıcı oluşturuldu!")
-            logger.info(f"   Kullanıcı Adı: admin")
+            logger.info("   Kullanıcı Adı: admin")
             logger.info(f"   Şifre: {admin_password}")
-            logger.info(f"   Email: admin@stokcrm.com")
-            logger.info(f"   Rol: yönetici")
+            logger.info("   Email: admin@stokcrm.com")
+            logger.info("   Rol: yönetici")
         else:
             logger.info("ℹ️  Admin kullanıcı zaten mevcut")
     except Exception as e:
