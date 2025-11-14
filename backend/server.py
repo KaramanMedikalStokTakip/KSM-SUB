@@ -930,6 +930,7 @@ async def seed_test_data(current_user: User = Depends(get_current_user)):
             "description": "Temassız infrared termometre, hızlı ve hassas ölçüm",
             "unit_type": "adet",
             "created_at": datetime.now(timezone.utc),
+            "updated_at": datetime.now(timezone.utc),
             "image_url": ""
         },
         {
@@ -946,6 +947,7 @@ async def seed_test_data(current_user: User = Depends(get_current_user)):
             "unit_type": "kutu",
             "package_quantity": 100,
             "created_at": datetime.now(timezone.utc),
+            "updated_at": datetime.now(timezone.utc),
             "image_url": ""
         },
         {
@@ -961,6 +963,7 @@ async def seed_test_data(current_user: User = Depends(get_current_user)):
             "description": "Kompresörlü nebulizatör, solunum tedavisi için",
             "unit_type": "adet",
             "created_at": datetime.now(timezone.utc),
+            "updated_at": datetime.now(timezone.utc),
             "image_url": ""
         },
         {
@@ -977,6 +980,7 @@ async def seed_test_data(current_user: User = Depends(get_current_user)):
             "unit_type": "kutu",
             "package_quantity": 50,
             "created_at": datetime.now(timezone.utc),
+            "updated_at": datetime.now(timezone.utc),
             "image_url": ""
         }
     ]
