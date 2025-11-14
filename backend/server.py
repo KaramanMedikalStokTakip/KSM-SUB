@@ -914,6 +914,7 @@ async def seed_test_data(current_user: User = Depends(get_current_user)):
             "description": "Otomatik dijital tansiyon ölçüm cihazı, koldan ölçüm, hafızalı",
             "unit_type": "adet",
             "created_at": datetime.now(timezone.utc),
+            "updated_at": datetime.now(timezone.utc),
             "image_url": ""
         },
         {
