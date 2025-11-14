@@ -13,6 +13,7 @@ import { Plus, Edit, Trash2, Sparkles, Upload, Grid3x3, List, Search, Camera, X,
 import { Html5Qrcode } from 'html5-qrcode';
 
 function Stock() {
+  const { user } = useAuth();
   const location = useLocation();
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
