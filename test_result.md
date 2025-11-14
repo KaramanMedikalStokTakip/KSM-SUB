@@ -389,17 +389,15 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Stok Yönetimi - Ürün Detay Pop-up Dark Mode İyileştirmesi"
-    - "Made with Emergent Badge Kaldırma"
-    - "Raporlar Sekmelerinde Dark Mode İyileştirmesi"
-    - "Dashboard - Ürün Bul Görsel İyileştirmesi"
-    - "Dashboard - Düşük Stok Kartı Uyarı Sistemi"
+    - "Çoklu Format Rapor İndirme - Türkçe Dil Desteği"
+    - "Rapor Geçmişi Özelliği"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
   backend_testing_complete: true
   pwa_features_complete: true
   ui_improvements_complete: true
+  report_improvements_complete: false
 
 agent_communication:
     - agent: "main"
