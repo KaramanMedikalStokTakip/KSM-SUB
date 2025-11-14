@@ -844,14 +844,16 @@ function Stock() {
                   <span className="text-sm text-gray-600">Fiyat:</span>
                   <span className="font-bold text-blue-600">₺{product.sale_price.toFixed(2)}</span>
                 </div>
-                <div className="flex gap-2">
-                  <Button size="sm" variant="outline" className="flex-1" onClick={() => handleEdit(product)} data-testid={`edit-product-${product.id}`}>
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button size="sm" variant="outline" onClick={() => handleDelete(product.id)} data-testid={`delete-product-${product.id}`}>
-                    <Trash2 className="w-4 h-4 text-red-500" />
-                  </Button>
-                </div>
+                {user?.role === 'yönetici' && (
+                  <div className="flex gap-2">
+                    <Button size="sm" variant="outline" className="flex-1" onClick={() => handleEdit(product)} data-testid={`edit-product-${product.id}`}>
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => handleDelete(product.id)} data-testid={`delete-product-${product.id}`}>
+                      <Trash2 className="w-4 h-4 text-red-500" />
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
           ))}
