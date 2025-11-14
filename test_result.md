@@ -488,10 +488,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Düşük Stok Filtreleme ve Yönlendirme"
-    - "Stok Yönetimi - Barkod ve Açıklama Tıklanabilir"
-    - "Etkinlik Detayında Düzenleme Butonu"
-    - "Test Verileri Seed Endpoint"
+    - "Kullanıcı Düzenleme Endpoint"
+    - "Kullanıcı Düzenleme Özelliği"
+    - "Stok Yetkilendirme - Depo ve Satış"
+    - "Çoklu Format Rapor İndirme (PDF/TXT Hata Düzeltmesi)"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
