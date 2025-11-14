@@ -7,7 +7,7 @@ import { Input } from '../components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Download, FileText, FileSpreadsheet, FileType } from 'lucide-react';
+import { Download, FileText, FileSpreadsheet, FileType, Trash2 } from 'lucide-react';
 import { Label } from '../components/ui/label';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
