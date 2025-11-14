@@ -398,6 +398,65 @@ function Settings() {
             </CardContent>
           </Card>
 
+          {/* Kullanıcı Düzenleme Dialogu */}
+          <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Kullanıcı Düzenle</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleUpdateUser} className="space-y-4">
+                <div>
+                  <Label>Kullanıcı Adı *</Label>
+                  <Input
+                    value={editUser.username}
+                    onChange={(e) => setEditUser({ ...editUser, username: e.target.value })}
+                    required
+                    data-testid="edit-username-input"
+                  />
+                </div>
+                <div>
+                  <Label>E-posta</Label>
+                  <Input
+                    type="email"
+                    value={editUser.email}
+                    onChange={(e) => setEditUser({ ...editUser, email: e.target.value })}
+                    placeholder="isteğe bağlı"
+                    data-testid="edit-email-input"
+                  />
+                </div>
+                <div>
+                  <Label>Yeni Şifre (Boş bırakın değiştirmek istemiyorsanız)</Label>
+                  <Input
+                    type="password"
+                    value={editUser.password}
+                    onChange={(e) => setEditUser({ ...editUser, password: e.target.value })}
+                    placeholder="Değiştirmek istemiyorsanız boş bırakın"
+                    data-testid="edit-password-input"
+                  />
+                </div>
+                <div>
+                  <Label>Rol *</Label>
+                  <Select 
+                    value={editUser.role} 
+                    onValueChange={(value) => setEditUser({ ...editUser, role: value })}
+                  >
+                    <SelectTrigger data-testid="edit-role-select">
+                      <SelectValue placeholder="Rol seçin" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="yönetici">Yönetici</SelectItem>
+                      <SelectItem value="depo">Depo</SelectItem>
+                      <SelectItem value="satış">Satış</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button type="submit" className="w-full" data-testid="submit-edit-user-btn">
+                  Değişiklikleri Kaydet
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
+
           <Dialog open={permissionDialogOpen} onOpenChange={setPermissionDialogOpen}>
             <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
               <DialogHeader>
