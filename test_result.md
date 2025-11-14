@@ -322,11 +322,26 @@ frontend:
     file: "frontend/src/pages/Reports.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: true
           agent: "main"
           comment: "PDF (jspdf + jspdf-autotable), Excel (xlsx), Word (docx), TXT formatlarında rapor indirme özellikleri eklendi. Tüm raporlar (Stok Raporu, En Çok Satanlar, En Kârlılar) için 4 format seçeneği mevcut. Kütüphaneler yüklendi: jspdf@3.0.3, jspdf-autotable@5.0.2, xlsx@0.18.5, docx@9.5.1, file-saver@2.0.5. Her format için özel export fonksiyonları (exportToPDF, exportToExcel, exportToWord, exportToTxt) oluşturuldu."
+        - working: "NA"
+          agent: "main"
+          comment: "TÜRKÇE DİL DESTEĞİ VE İYİLEŞTİRMELER: 1) translateHeaders fonksiyonu eklendi - tüm sütun başlıklarını Türkçeleştiriyor (name->Ürün Adı, brand->Marka, quantity->Stok Miktarı vb). 2) PDF: Türkçe başlıklar kullanıyor, 'Oluşturma Tarihi' metni eklendi. 3) Excel: Türkçe başlıklarla export ediliyor. 4) Word: Türkçe başlıklar, 'Oluşturma Tarihi' metni eklendi. 5) TXT: Türkçe alan adları, tarih ve saat bilgisi eklendi, charset UTF-8 ile kaydediliyor. Frontend başarıyla derlendi."
+  
+  - task: "Rapor Geçmişi Özelliği"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/Reports.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "YENİ ÖZELLİK - RAPOR GEÇMİŞİ: Oluşturulan her rapor artık tarih ve saati ile birlikte localStorage'da saklanıyor ve sayfada görüntüleniyor. Her rapor kaydı için: 1) Rapor tipi (Stok Raporu/En Çok Satanlar/En Karlı Ürünler), 2) Oluşturulma tarihi ve saati (tr-TR formatında), 3) Rapor özet bilgileri (toplam ürün, adet, değer, kâr, gelir vb), 4) Silme butonu (Trash2 icon ile) eklendi. UI'da gri arka planlı kartlar halinde gösteriliyor, hover efekti var. loadReportHistory, saveReportToHistory ve deleteReportFromHistory fonksiyonları eklendi. fetchStockReport, fetchTopSelling ve fetchTopProfit fonksiyonları rapor geçmişine otomatik kayıt yapıyor. Frontend başarıyla derlendi."
 
 backend:
   - task: "Müşteri Arama Endpoint"
