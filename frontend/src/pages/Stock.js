@@ -888,7 +888,13 @@ function Stock() {
                           {product.name}
                         </div>
                         {product.description && (
-                          <div className="text-xs text-gray-500 mt-1 line-clamp-1">{product.description}</div>
+                          <div 
+                            className="text-xs text-gray-500 mt-1 line-clamp-1 cursor-pointer hover:text-blue-600 hover:underline"
+                            onClick={() => openProductDetail(product)}
+                            title="Detayları görmek için tıklayın"
+                          >
+                            {product.description}
+                          </div>
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
