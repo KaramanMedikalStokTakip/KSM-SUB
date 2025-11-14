@@ -402,6 +402,33 @@ frontend:
         - working: "NA"
           agent: "main"
           comment: "TÜRKÇE DİL DESTEĞİ VE İYİLEŞTİRMELER: 1) translateHeaders fonksiyonu eklendi - tüm sütun başlıklarını Türkçeleştiriyor (name->Ürün Adı, brand->Marka, quantity->Stok Miktarı vb). 2) PDF: Türkçe başlıklar kullanıyor, 'Oluşturma Tarihi' metni eklendi. 3) Excel: Türkçe başlıklarla export ediliyor. 4) Word: Türkçe başlıklar, 'Oluşturma Tarihi' metni eklendi. 5) TXT: Türkçe alan adları, tarih ve saat bilgisi eklendi, charset UTF-8 ile kaydediliyor. Frontend başarıyla derlendi."
+        - working: "NA"
+          agent: "main"
+          comment: "KASIM 2025 - PDF/TXT RAPOR HATASI DÜZELTİLDİ: file-saver kütüphanesi import edilmemişti. 'import { saveAs } from file-saver;' satırı eklendi. TXT export fonksiyonu saveAs kullanıyordu ama import yoktu, bu yüzden hata veriyordu. Şimdi düzeltildi."
+
+  - task: "Kullanıcı Düzenleme Özelliği"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/Settings.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "KASIM 2025 - Kullanıcı düzenleme dialogu eklendi. State'ler: editDialogOpen, editingUser, editUser. handleEditUserClick fonksiyonu: kullanıcıya tıklayınca formu dolduruyor. handleUpdateUser: sadece değişen alanları backend'e gönderiyor (username, email, password, role). UI: Her kullanıcının yanında mavi Edit butonu (Edit2 icon), edit dialogunda 4 alan (username, email, password -optional-, role). Admin kendi hesabını da düzenleyebilir."
+
+  - task: "Stok Yetkilendirme - Depo ve Satış"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/Stock.js, frontend/src/pages/Settings.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "KASIM 2025 - ROL BAZLI YETKİLENDİRME: 1) Settings.js: ROLE_PERMISSIONS'da 'depo' ve 'satış' rolleri için stock_add, stock_edit artık false. Sadece 'yönetici' stokta değişiklik yapabilir. 2) Stock.js: useAuth hook'u ile user bilgisi alınıyor. 'Yeni Ürün' butonu, grid/list görünümündeki Edit/Delete butonları, tablo başlığındaki 'İşlemler' kolonu, ürün detay pop-up'ındaki 'Düzenle' butonu artık sadece user?.role === 'yönetici' ise görünüyor. Depo ve satış kullanıcıları sadece stokları görüntüleyebilir."
   
   - task: "Rapor Geçmişi Özelliği"
     implemented: true
