@@ -308,7 +308,7 @@ async def get_product_by_barcode(barcode: str, current_user: User = Depends(get_
         raise HTTPException(status_code=404, detail="Ürün bulunamadı")
     if isinstance(product["created_at"], str):
         product["created_at"] = datetime.fromisoformat(product["created_at"])
-    if isinstance(product["updated_at"], str):
+    if "updated_at" in product and isinstance(product["updated_at"], str):
         product["updated_at"] = datetime.fromisoformat(product["updated_at"])
     return Product(**product)
 
