@@ -377,8 +377,24 @@ function Reports() {
 
           {stockReport && (
             <Card>
-              <CardHeader>
-                <CardTitle>Stok Raporu Özeti</CardTitle>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle>Stok Raporu Özeti</CardTitle>
+                  {stockReport.createdDate && (
+                    <p className="text-sm text-gray-500 mt-1">
+                      📅 Oluşturulma: {stockReport.createdDate} - {stockReport.createdTime}
+                    </p>
+                  )}
+                </div>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={clearStockReport}
+                  className="ml-4"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Temizle
+                </Button>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
