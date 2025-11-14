@@ -942,16 +942,18 @@ function Stock() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className="text-sm font-bold text-blue-600">₺{product.sale_price.toFixed(2)}</span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div className="flex gap-2 justify-end">
-                          <Button size="sm" variant="outline" onClick={() => handleEdit(product)} data-testid={`edit-product-${product.id}`}>
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button size="sm" variant="outline" onClick={() => handleDelete(product.id)} data-testid={`delete-product-${product.id}`}>
-                            <Trash2 className="w-4 h-4 text-red-500" />
-                          </Button>
-                        </div>
-                      </td>
+                      {user?.role === 'yönetici' && (
+                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          <div className="flex gap-2 justify-end">
+                            <Button size="sm" variant="outline" onClick={() => handleEdit(product)} data-testid={`edit-product-${product.id}`}>
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button size="sm" variant="outline" onClick={() => handleDelete(product.id)} data-testid={`delete-product-${product.id}`}>
+                              <Trash2 className="w-4 h-4 text-red-500" />
+                            </Button>
+                          </div>
+                        </td>
+                      )}
                     </tr>
                   ))}
                 </tbody>
