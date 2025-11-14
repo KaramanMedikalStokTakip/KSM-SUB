@@ -1048,6 +1048,7 @@ async def seed_test_data(current_user: User = Depends(get_current_user)):
             "description": "Aylık rutin stok sayımı yapılacak",
             "date": (today + timedelta(days=2)).replace(hour=10, minute=0, second=0, microsecond=0),
             "alarm": True,
+            "user_id": current_user.id,
             "created_at": datetime.now(timezone.utc)
         },
         {
@@ -1056,6 +1057,7 @@ async def seed_test_data(current_user: User = Depends(get_current_user)):
             "description": "Yeni medikal ürün tedarikçisi ile görüşme",
             "date": (today + timedelta(days=5)).replace(hour=14, minute=30, second=0, microsecond=0),
             "alarm": True,
+            "user_id": current_user.id,
             "created_at": datetime.now(timezone.utc)
         },
         {
@@ -1064,6 +1066,7 @@ async def seed_test_data(current_user: User = Depends(get_current_user)):
             "description": "Mevsimsel fiyat güncellemelerini uygula",
             "date": (today + timedelta(days=7)).replace(hour=9, minute=0, second=0, microsecond=0),
             "alarm": False,
+            "user_id": current_user.id,
             "created_at": datetime.now(timezone.utc)
         },
         {
@@ -1072,6 +1075,7 @@ async def seed_test_data(current_user: User = Depends(get_current_user)):
             "description": "Büyük müşteri için tanıtım sunumu",
             "date": (today + timedelta(days=10)).replace(hour=15, minute=0, second=0, microsecond=0),
             "alarm": True,
+            "user_id": current_user.id,
             "created_at": datetime.now(timezone.utc)
         },
         {
@@ -1080,6 +1084,7 @@ async def seed_test_data(current_user: User = Depends(get_current_user)):
             "description": "Yeni nebulizatör cihazları için personel eğitimi",
             "date": (today + timedelta(days=14)).replace(hour=11, minute=0, second=0, microsecond=0),
             "alarm": False,
+            "user_id": current_user.id,
             "created_at": datetime.now(timezone.utc)
         }
     ]
