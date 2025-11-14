@@ -495,10 +495,6 @@ function Reports() {
                   <FileText className="w-4 h-4 mr-2" />
                   PDF
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => exportToWord(topSelling, 'en-cok-satanlar', 'En Çok Satan Ürünler Raporu')}>
-                  <FileType className="w-4 h-4 mr-2" />
-                  Word
-                </Button>
                 <Button variant="outline" size="sm" onClick={() => exportToTxt(topSelling, 'en-cok-satanlar', 'En Çok Satan Ürünler Raporu')}>
                   <Download className="w-4 h-4 mr-2" />
                   TXT
