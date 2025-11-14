@@ -118,6 +118,10 @@ function Reports() {
 
       const response = await axios.get(`${API}/reports/stock`, { params });
       setStockReport(response.data);
+      
+      // Save to localStorage
+      localStorage.setItem('savedStockReport', JSON.stringify(response.data));
+      
       toast.success('Stok raporu oluşturuldu');
     } catch (error) {
       toast.error('Rapor yüklenemedi');
