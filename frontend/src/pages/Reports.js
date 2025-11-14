@@ -242,6 +242,11 @@ function Reports() {
 
   const exportToPDF = (data, filename, title) => {
     try {
+      if (!data || data.length === 0) {
+        toast.error('Dışa aktarılacak veri bulunamadı');
+        return;
+      }
+
       const doc = new jsPDF();
       
       // Başlık ekle
@@ -267,7 +272,8 @@ function Reports() {
       doc.save(`${filename}.pdf`);
       toast.success('PDF raporu indirildi');
     } catch (error) {
-      toast.error('PDF dışa aktarma başarısız');
+      console.error('PDF export error:', error);
+      toast.error(`PDF dışa aktarma başarısız: ${error.message}`);
     }
   };
 
