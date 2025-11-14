@@ -539,7 +539,7 @@ function Reports() {
         </TabsContent>
 
         <TabsContent value="selling" className="space-y-4">
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <Button onClick={fetchTopSelling} disabled={loading} data-testid="fetch-top-selling-btn">
               {loading ? 'Yükleniyor...' : 'Raporu Oluştur'}
             </Button>
@@ -561,9 +561,23 @@ function Reports() {
                   <Download className="w-4 h-4 mr-2" />
                   TXT
                 </Button>
+                <Button variant="destructive" size="sm" onClick={clearTopSelling}>
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Temizle
+                </Button>
               </>
             )}
           </div>
+
+          {topSelling.length > 0 && (() => {
+            const meta = localStorage.getItem('savedTopSellingMeta');
+            const metaData = meta ? JSON.parse(meta) : null;
+            return metaData && (
+              <div className="text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
+                📅 Oluşturulma: {metaData.createdDate} - {metaData.createdTime} | 📊 Tarih Aralığı: {metaData.dateRange}
+              </div>
+            );
+          })()}
 
           {topSelling.length > 0 && (
             <Card>
