@@ -279,6 +279,11 @@ function Reports() {
 
   const exportToTxt = (data, filename, title) => {
     try {
+      if (!data || data.length === 0) {
+        toast.error('Dışa aktarılacak veri bulunamadı');
+        return;
+      }
+
       let content = `${title}\n`;
       content += `Oluşturma Tarihi: ${new Date().toLocaleDateString('tr-TR')}\n`;
       content += '='.repeat(50) + '\n\n';
@@ -295,7 +300,8 @@ function Reports() {
       saveAs(blob, `${filename}.txt`);
       toast.success('TXT raporu indirildi');
     } catch (error) {
-      toast.error('TXT dışa aktarma başarısız');
+      console.error('TXT export error:', error);
+      toast.error(`TXT dışa aktarma başarısız: ${error.message}`);
     }
   };
 
