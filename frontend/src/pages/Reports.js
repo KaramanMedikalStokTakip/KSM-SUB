@@ -106,6 +106,10 @@ function Reports() {
         params: { start_date: startDate, end_date: endDate, limit: 10 }
       });
       setTopProfit(response.data);
+      
+      // Save to localStorage
+      localStorage.setItem('savedTopProfit', JSON.stringify(response.data));
+      
     } catch (error) {
       toast.error('Rapor yüklenemedi');
     } finally {
