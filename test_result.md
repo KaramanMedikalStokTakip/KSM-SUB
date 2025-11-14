@@ -449,15 +449,17 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Çoklu Format Rapor İndirme - Türkçe Dil Desteği"
-    - "Rapor Geçmişi Özelliği"
+    - "Düşük Stok Filtreleme ve Yönlendirme"
+    - "Stok Yönetimi - Barkod ve Açıklama Tıklanabilir"
+    - "Etkinlik Detayında Düzenleme Butonu"
+    - "Test Verileri Seed Endpoint"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
-  backend_testing_complete: true
+  backend_testing_complete: false
   pwa_features_complete: true
-  ui_improvements_complete: true
-  report_improvements_complete: false
+  ui_improvements_complete: false
+  report_improvements_complete: true
 
 agent_communication:
     - agent: "main"
