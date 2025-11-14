@@ -240,6 +240,50 @@ async def get_users(current_user: User = Depends(get_current_user)):
             u["created_at"] = datetime.fromisoformat(u["created_at"])
     return users
 
+@api_router.put("/users/{user_id}", response_model=User)
+async def update_user(user_id: str, update_data: UserUpdate, current_user: User = Depends(get_current_user)):
+    # Only admins can update users
+    if current_user.role != "yönetici":
+        raise HTTPException(status_code=403, detail="Only administrators can update users")
+    
+    # Find the user
+    existing_user = await db.users.find_one({"id": user_id})
+    if not existing_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Prepare update data
+    update_dict = {}
+    
+    if update_data.username:
+        # Check if username is already taken by another user
+        username_check = await db.users.find_one({"username": update_data.username, "id": {"$ne": user_id}})
+        if username_check:
+            raise HTTPException(status_code=400, detail="Username already taken")
+        update_dict["username"] = update_data.username
+    
+    if update_data.email is not None:
+        update_dict["email"] = update_data.email
+    
+    if update_data.password:
+        # Hash the new password
+        update_dict["password"] = pwd_context.hash(update_data.password)
+    
+    if update_data.role:
+        if update_data.role not in ["yönetici", "depo", "satış"]:
+            raise HTTPException(status_code=400, detail="Invalid role")
+        update_dict["role"] = update_data.role
+    
+    # Update the user
+    if update_dict:
+        await db.users.update_one({"id": user_id}, {"$set": update_dict})
+    
+    # Return updated user (without password)
+    updated_user = await db.users.find_one({"id": user_id}, {"_id": 0, "password": 0})
+    if updated_user and "created_at" in updated_user and isinstance(updated_user["created_at"], str):
+        updated_user["created_at"] = datetime.fromisoformat(updated_user["created_at"])
+    
+    return User(**updated_user)
+
 @api_router.delete("/users/{user_id}")
 async def delete_user(user_id: str, current_user: User = Depends(get_current_user)):
     # Prevent users from deleting themselves
