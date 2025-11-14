@@ -32,6 +32,8 @@ function Reports() {
 
   useEffect(() => {
     fetchFilters();
+    loadReportHistory();
+    loadSavedReports();
   }, []);
 
   const fetchFilters = async () => {
