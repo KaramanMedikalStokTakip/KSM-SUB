@@ -810,9 +810,21 @@ function Stock() {
                   {product.name}
                 </h3>
                 <p className="text-sm text-gray-500 mb-2">{product.brand} - {product.category}</p>
-                <p className="text-xs text-gray-400 mb-3">{product.barcode}</p>
+                <p 
+                  className="text-xs text-gray-400 mb-3 cursor-pointer hover:text-blue-600 hover:underline"
+                  onClick={() => openProductDetail(product)}
+                  title="Detayları görmek için tıklayın"
+                >
+                  {product.barcode}
+                </p>
                 {product.description && (
-                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">{product.description}</p>
+                  <p 
+                    className="text-sm text-gray-600 mb-3 line-clamp-2 cursor-pointer hover:text-blue-600"
+                    onClick={() => openProductDetail(product)}
+                    title="Detayları görmek için tıklayın"
+                  >
+                    {product.description}
+                  </p>
                 )}
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-sm text-gray-600">Stok:</span>
