@@ -152,10 +152,25 @@ function Reports() {
       const response = await axios.get(`${API}/reports/top-profit`, {
         params: { start_date: startDate, end_date: endDate, limit: 10 }
       });
+      
+      // Tarih ve saat bilgisi ile rapor objesi oluştur
+      const reportWithMeta = {
+        data: response.data,
+        createdAt: new Date().toISOString(),
+        createdDate: new Date().toLocaleDateString('tr-TR'),
+        createdTime: new Date().toLocaleTimeString('tr-TR'),
+        dateRange: `${startDate} - ${endDate}`
+      };
+      
       setTopProfit(response.data);
       
-      // Save to localStorage
-      localStorage.setItem('savedTopProfit', JSON.stringify(response.data));
+      // localStorage'a kaydet
+      localStorage.setItem('savedTopProfit', JSON.stringify(reportWithMeta));
+      localStorage.setItem('savedTopProfitMeta', JSON.stringify({
+        createdDate: reportWithMeta.createdDate,
+        createdTime: reportWithMeta.createdTime,
+        dateRange: reportWithMeta.dateRange
+      }));
       
     } catch (error) {
       toast.error('Rapor yüklenemedi');
