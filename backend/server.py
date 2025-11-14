@@ -330,7 +330,7 @@ async def update_product(product_id: str, product_data: ProductUpdate, current_u
     product = await db.products.find_one({"id": product_id}, {"_id": 0})
     if isinstance(product["created_at"], str):
         product["created_at"] = datetime.fromisoformat(product["created_at"])
-    if isinstance(product["updated_at"], str):
+    if "updated_at" in product and isinstance(product["updated_at"], str):
         product["updated_at"] = datetime.fromisoformat(product["updated_at"])
     return Product(**product)
 
