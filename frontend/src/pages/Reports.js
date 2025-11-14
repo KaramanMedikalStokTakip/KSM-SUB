@@ -70,6 +70,38 @@ function Reports() {
       console.error('Kaydedilmiş raporlar yüklenemedi', error);
     }
   };
+  const deleteReportFromHistory = (id) => {
+    if (window.confirm('Bu raporu silmek istediğinizden emin misiniz?')) {
+      const updatedHistory = reportHistory.filter(report => report.id !== id);
+      setReportHistory(updatedHistory);
+      localStorage.setItem('reportHistory', JSON.stringify(updatedHistory));
+      toast.success('Rapor geçmişten silindi');
+    }
+  };
+
+  const clearStockReport = () => {
+    if (window.confirm('Stok raporunu temizlemek istediğinizden emin misiniz?')) {
+      setStockReport(null);
+      localStorage.removeItem('savedStockReport');
+      toast.success('Stok raporu temizlendi');
+    }
+  };
+
+  const clearTopSelling = () => {
+    if (window.confirm('En çok satanlar raporunu temizlemek istediğinizden emin misiniz?')) {
+      setTopSelling([]);
+      localStorage.removeItem('savedTopSelling');
+      toast.success('Rapor temizlendi');
+    }
+  };
+
+  const clearTopProfit = () => {
+    if (window.confirm('En karlılar raporunu temizlemek istediğinizden emin misiniz?')) {
+      setTopProfit([]);
+      localStorage.removeItem('savedTopProfit');
+      toast.success('Rapor temizlendi');
+    }
+  };
 
   const fetchTopSelling = async () => {
     if (!startDate || !endDate) {
