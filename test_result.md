@@ -117,6 +117,18 @@ backend:
           agent: "main"
           comment: "POST /api/admin/seed-test-data endpoint'i eklendi. Sadece yönetici erişebilir. 5 medikal ürün (Dijital Tansiyon Aleti, İnfrared Ateş Ölçer, Steril Eldiven, Nebulizatör, Kan Şekeri Test Çubuğu), 5 müşteri (Ayşe Yılmaz, Mehmet Demir, Fatma Şahin, Ali Kara, Zeynep Arslan), 5 etkinlik (Stok Sayımı, Tedarikçi Toplantısı, Fiyat Güncellemesi, Müşteri Ziyareti, Ürün Eğitimi) ekliyor. Ürünlerden bazıları düşük stokta."
 
+  - task: "Kullanıcı Düzenleme Endpoint"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "KASIM 2025 - PUT /api/users/{user_id} endpoint'i eklendi. Sadece yönetici kullanabilir. UserUpdate modeli oluşturuldu (username, email, password, role tüm alanlar optional). Username kontrolü (başka kullanıcıda aynı username varsa hata), şifre hash'leme, rol validasyonu eklendi. Güncellenen kullanıcı bilgileri döndürülüyor (şifre hariç)."
+
   - task: "PWA Backend Hazırlık (Değişiklik Yok)"
     implemented: true
     working: true
