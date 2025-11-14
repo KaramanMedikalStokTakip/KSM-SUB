@@ -64,6 +64,15 @@ function Stock() {
   }, []);
 
   useEffect(() => {
+    // URL parametrelerini kontrol et ve düşük stok filtresini uygula
+    const params = new URLSearchParams(location.search);
+    if (params.get('filter') === 'low-stock') {
+      setShowFilters(true);
+      toast.info('Düşük stoklu ürünler gösteriliyor');
+    }
+  }, [location]);
+
+  useEffect(() => {
     applyFilters();
   }, [products, filters]);
 
