@@ -297,7 +297,7 @@ async def get_products(current_user: User = Depends(get_current_user)):
     for p in products:
         if isinstance(p["created_at"], str):
             p["created_at"] = datetime.fromisoformat(p["created_at"])
-        if isinstance(p["updated_at"], str):
+        if "updated_at" in p and isinstance(p["updated_at"], str):
             p["updated_at"] = datetime.fromisoformat(p["updated_at"])
     return products
 
