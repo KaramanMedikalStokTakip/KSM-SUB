@@ -303,10 +303,17 @@ function Calendar() {
               <div className="flex gap-2 pt-4">
                 <Button
                   variant="outline"
-                  className="flex-1"
                   onClick={() => setDetailDialogOpen(false)}
                 >
                   Kapat
+                </Button>
+                <Button
+                  className="flex-1"
+                  onClick={() => handleEditEvent(selectedEvent)}
+                  data-testid={`edit-event-detail-${selectedEvent.id}`}
+                >
+                  <Edit className="w-4 h-4 mr-2" />
+                  Düzenle
                 </Button>
                 <Button
                   variant="destructive"
