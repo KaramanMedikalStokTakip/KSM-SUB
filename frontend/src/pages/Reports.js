@@ -64,8 +64,26 @@ function Reports() {
       const savedProfit = localStorage.getItem('savedTopProfit');
       
       if (savedStock) setStockReport(JSON.parse(savedStock));
-      if (savedSelling) setTopSelling(JSON.parse(savedSelling));
-      if (savedProfit) setTopProfit(JSON.parse(savedProfit));
+      if (savedSelling) {
+        const sellingData = JSON.parse(savedSelling);
+        // Yeni format kontrolü - eğer data property varsa yeni format
+        if (sellingData.data) {
+          setTopSelling(sellingData.data);
+        } else {
+          // Eski format - direkt array
+          setTopSelling(sellingData);
+        }
+      }
+      if (savedProfit) {
+        const profitData = JSON.parse(savedProfit);
+        // Yeni format kontrolü - eğer data property varsa yeni format
+        if (profitData.data) {
+          setTopProfit(profitData.data);
+        } else {
+          // Eski format - direkt array
+          setTopProfit(profitData);
+        }
+      }
     } catch (error) {
       console.error('Kaydedilmiş raporlar yüklenemedi', error);
     }
