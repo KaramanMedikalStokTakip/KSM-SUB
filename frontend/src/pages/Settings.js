@@ -70,11 +70,19 @@ function Settings() {
   const [showLowStockAlerts, setShowLowStockAlerts] = useState(true);
   const [users, setUsers] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [permissionDialogOpen, setPermissionDialogOpen] = useState(false);
   const [editingRole, setEditingRole] = useState(null);
+  const [editingUser, setEditingUser] = useState(null);
   const [rolePermissions, setRolePermissions] = useState(ROLE_PERMISSIONS);
   const [newUser, setNewUser] = useState({
     username: '',
+    password: '',
+    role: 'depo'
+  });
+  const [editUser, setEditUser] = useState({
+    username: '',
+    email: '',
     password: '',
     role: 'depo'
   });
