@@ -49,10 +49,18 @@ function Layout({ children }) {
     { path: '/stock', icon: Package, label: 'Stok Yönetimi' },
     { path: '/pos', icon: ShoppingCart, label: 'Kasiyer / POS' },
     { path: '/customers', icon: Users, label: 'Müşteriler' },
-    { path: '/reports', icon: FileText, label: 'Raporlar' },
+    { path: '/reports', icon: FileText, label: 'Raporlar', adminOnly: true },
     { path: '/calendar', icon: CalendarIcon, label: 'Takvim' },
     { path: '/settings', icon: SettingsIcon, label: 'Ayarlar' },
   ];
+  
+  // Kullanıcı rolüne göre menü öğelerini filtrele
+  const filteredNavItems = navItems.filter(item => {
+    if (item.adminOnly) {
+      return user?.role === 'yönetici';
+    }
+    return true;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
