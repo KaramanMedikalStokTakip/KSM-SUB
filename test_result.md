@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Uygulama İyileştirmeleri: 1) Düşük stok kartına tıklayınca sadece düşük stok ürünlerinin gösterilmesi, 2) Stok yönetiminde resim olmasa bile barkod ve açıklamaya tıklayınca ürün detayı açılması, 3) PDF indirme hatası düzeltmesi, 4) Word indirme özelliğinin kaldırılması, 5) Etkinlik detayında düzenleme butonu eklenmesi, 6) Test için medikal ürünler, müşteriler ve etkinlikler eklenmesi"
+user_problem_statement: "YENİ DÜZENLEMELER (Aralık 2025): 1) PDF dosya indirme hatası düzeltmesi (doc.autoTable is not a function), 2) Yönetici harici kullanıcılara Raporlar sekmesi görünmesin, 3) Manuel test için stok, müşteri ve etkinlik kısımlarına 5'er adet örnek veri eklenmesi"
 
 backend:
   - task: "Test Verileri Seed Endpoint"
