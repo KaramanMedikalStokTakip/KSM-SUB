@@ -240,6 +240,22 @@ function Reports() {
     }
   };
 
+  // Türkçe karakterleri PDF uyumlu hale getir
+  const turkishToPdfText = (text) => {
+    if (typeof text !== 'string') return text;
+    
+    const turkishMap = {
+      'ç': 'c', 'Ç': 'C',
+      'ğ': 'g', 'Ğ': 'G',
+      'ı': 'i', 'İ': 'I',
+      'ö': 'o', 'Ö': 'O',
+      'ş': 's', 'Ş': 'S',
+      'ü': 'u', 'Ü': 'U'
+    };
+    
+    return text.replace(/[çÇğĞıİöÖşŞüÜ]/g, char => turkishMap[char] || char);
+  };
+
   const exportToPDF = (data, filename, title) => {
     try {
       if (!data || data.length === 0) {
@@ -251,15 +267,17 @@ function Reports() {
       
       // Başlık ekle
       doc.setFontSize(16);
-      doc.text(title, 14, 15);
+      doc.text(turkishToPdfText(title), 14, 15);
       
       // Tarih bilgisi
       doc.setFontSize(10);
-      doc.text(`Oluşturma Tarihi: ${new Date().toLocaleDateString('tr-TR')}`, 14, 25);
+      doc.text(`Olusturma Tarihi: ${new Date().toLocaleDateString('tr-TR')}`, 14, 25);
       
-      // Tablo oluştur
-      const headers = Object.keys(data[0] || {});
-      const rows = data.map(item => Object.values(item));
+      // Tablo oluştur - Türkçe karakterleri dönüştür
+      const headers = Object.keys(data[0] || {}).map(h => turkishToPdfText(h));
+      const rows = data.map(item => 
+        Object.values(item).map(val => turkishToPdfText(String(val)))
+      );
       
       autoTable(doc, {
         head: [headers],
