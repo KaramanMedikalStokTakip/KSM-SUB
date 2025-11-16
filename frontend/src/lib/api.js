@@ -29,7 +29,7 @@ export const loginUser = async (username, password) => {
 };
 
 export const registerUser = async (username, email, password, role = 'depo') => {
-  // Hash password
+  // Hash password using bcrypt.js
   const hashedPassword = await bcrypt.hash(password, 10);
 
   // Insert user
@@ -43,16 +43,15 @@ export const registerUser = async (username, email, password, role = 'depo') => 
         role
       }
     ])
-    .select()
+    .select('id, username, email, role, created_at')
     .single();
 
   if (error) {
     if (error.code === '23505') throw new Error('Bu kullanıcı adı zaten kullanılıyor');
-    throw new Error('Kayıt başarısız');
+    throw new Error('Kayıt başarısız: ' + error.message);
   }
 
-  const { password: _, ...userWithoutPassword } = data;
-  return userWithoutPassword;
+  return data;
 };
 
 // ============================================
