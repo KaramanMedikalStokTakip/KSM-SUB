@@ -6,25 +6,25 @@ import bcrypt from 'bcryptjs';
 // ============================================
 
 export const loginUser = async (username, password) => {
-  // Get user by username
-  const { data: users, error } = await supabase
-    .from('users')
-    .select('*')
-    .eq('username', username)
-    .limit(1);
+  // Call Supabase RPC function to verify password
+  const { data, error } = await supabase
+    .rpc('verify_user_password', {
+      p_username: username,
+      p_password: password
+    });
 
-  if (error) throw new Error('Kullanıcı bulunamadı');
-  if (!users || users.length === 0) throw new Error('Kullanıcı adı veya şifre hatalı');
+  if (error) throw new Error('Giriş hatası: ' + error.message);
+  if (!data || data.length === 0) throw new Error('Kullanıcı adı veya şifre hatalı');
 
-  const user = users[0];
+  const result = data[0];
 
-  // Verify password
-  const passwordMatch = await bcrypt.compare(password, user.password);
-  if (!passwordMatch) throw new Error('Kullanıcı adı veya şifre hatalı');
+  // Check if password matches
+  if (!result.password_match) {
+    throw new Error('Kullanıcı adı veya şifre hatalı');
+  }
 
-  // Remove password from user object
-  const { password: _, ...userWithoutPassword } = user;
-
+  // Return user data without password_match field
+  const { password_match, ...userWithoutPassword } = result;
   return userWithoutPassword;
 };
 
