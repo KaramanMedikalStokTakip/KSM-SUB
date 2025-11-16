@@ -55,6 +55,8 @@ Kullanıcı Adı: admin
 
 ## 📚 Dokümantasyon
 
+- **[Supabase Migration Guide](SUPABASE_MIGRATION_GUIDE.md)** - 🆕 Detaylı migrasyon rehberi
+- **[Changelog](CHANGELOG.md)** - Tüm versiyon değişiklikleri
 - **[PWA Kurulum Rehberi](PWA_KURULUM_REHBERI.md)** - Progressive Web App kurulumu
 - **[Admin Bilgileri](ADMIN_BILGILERI.md)** - Admin kullanıcı bilgileri
 
