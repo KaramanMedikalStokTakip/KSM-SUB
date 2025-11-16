@@ -78,7 +78,7 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post(`${API}/auth/login`, loginForm);
+      const user = await loginUser(loginForm.username, loginForm.password);
       
       // Save credentials if "remember me" is checked
       if (rememberMe) {
@@ -89,11 +89,11 @@ function Login() {
         localStorage.removeItem('rememberedPassword');
       }
       
-      login(response.data.access_token, response.data.user);
+      login(user);
       toast.success('Giriş başarılı!');
       navigate('/');
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Giriş başarısız');
+      toast.error(error.message || 'Giriş başarısız');
     } finally {
       setLoading(false);
     }
