@@ -75,6 +75,7 @@ export const updateUser = async (userId, updates) => {
   if (updates.email !== undefined) updateData.email = updates.email;
   if (updates.role) updateData.role = updates.role;
   if (updates.password) {
+    // Hash password using bcrypt.js
     updateData.password = await bcrypt.hash(updates.password, 10);
   }
 
@@ -87,7 +88,7 @@ export const updateUser = async (userId, updates) => {
 
   if (error) {
     if (error.code === '23505') throw new Error('Bu kullanıcı adı zaten kullanılıyor');
-    throw error;
+    throw new Error('Güncelleme hatası: ' + error.message);
   }
 
   return data;
