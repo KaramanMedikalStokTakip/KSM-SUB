@@ -2,6 +2,8 @@
 
 Modern ve kullanıcı dostu bir stok yönetimi, müşteri takibi ve iş organizasyon sistemi.
 
+> **🎉 v5.0 - Supabase Migration!** Bu proje FastAPI + MongoDB'den Supabase (PostgreSQL) ile tamamen serverless mimariye taşındı. Detaylar için [SUPABASE_MIGRATION_GUIDE.md](SUPABASE_MIGRATION_GUIDE.md) dosyasına bakın.
+
 ## ✨ Özellikler
 
 ### 📊 Stok Yönetimi
