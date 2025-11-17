@@ -175,13 +175,13 @@ function Settings() {
       if (editUser.password) updateData.password = editUser.password; // Sadece doldurulduysa
       if (editUser.role !== editingUser.role) updateData.role = editUser.role;
 
-      await axios.put(`${API}/users/${editingUser.id}`, updateData);
+      await updateUser(editingUser.id, updateData);
       toast.success('Kullanıcı başarıyla güncellendi');
       fetchUsers();
       setEditDialogOpen(false);
       setEditingUser(null);
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Kullanıcı güncellenemedi');
+      toast.error(error.message || 'Kullanıcı güncellenemedi');
     }
   };
 
@@ -193,11 +193,11 @@ function Settings() {
     
     if (window.confirm('Bu kullanıcıyı silmek istediğinizden emin misiniz?')) {
       try {
-        await axios.delete(`${API}/users/${userId}`);
+        await deleteUser(userId);
         toast.success('Kullanıcı başarıyla silindi');
         fetchUsers();
       } catch (error) {
-        toast.error(error.response?.data?.detail || 'Kullanıcı silinemedi');
+        toast.error(error.message || 'Kullanıcı silinemedi');
       }
     }
   };
