@@ -59,25 +59,31 @@ Kullanıcı Adı: admin
 ## 📚 Dokümantasyon
 
 - **[Supabase Migration Guide](SUPABASE_MIGRATION_GUIDE.md)** - 🆕 Detaylı migrasyon rehberi
+- **[API Integrations Guide](API_INTEGRATIONS.md)** - 🆕 Gemini AI, MetalPrice API, Fiyat Karşılaştırma dokümantasyonu
 - **[Changelog](CHANGELOG.md)** - Tüm versiyon değişiklikleri
 - **[PWA Kurulum Rehberi](PWA_KURULUM_REHBERI.md)** - Progressive Web App kurulumu
 - **[Admin Bilgileri](ADMIN_BILGILERI.md)** - Admin kullanıcı bilgileri
 
 ## 🛠️ Teknolojiler
 
-### Backend
-- FastAPI (Python)
-- MongoDB
-- JWT Authentication
-- Passlib (Password Hashing)
+### Backend (Serverless)
+- **Supabase** (PostgreSQL Database + Auth)
+- Row Level Security (RLS)
+- PostgreSQL Functions (RPC)
+- bcrypt password hashing
 
 ### Frontend
 - React 19
 - Tailwind CSS
 - Radix UI Components
 - React Router
-- Axios
+- Supabase JS Client
 - PWA Support
+
+### External APIs
+- **Gemini AI** (Google) - Ürün açıklaması oluşturma
+- **MetalPrice API** - Altın/Gümüş fiyatları
+- **ExchangeRate API** - Döviz kurları
 
 ## 📦 Kurulum
 
