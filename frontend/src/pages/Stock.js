@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '../App';
 import { toast } from 'sonner';
-import { getAllProducts, createProduct, updateProduct, deleteProduct } from '../lib/api';
+import { getAllProducts, createProduct, updateProduct, deleteProduct, generateProductDescription, comparePrices } from '../lib/api';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
