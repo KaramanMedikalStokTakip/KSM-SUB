@@ -196,15 +196,11 @@ function Reports() {
   const fetchStockReport = async () => {
     setLoading(true);
     try {
-      const params = {};
-      if (selectedBrand) params.brand = selectedBrand;
-      if (selectedCategory) params.category = selectedCategory;
-
-      const response = await axios.get(`${API}/reports/stock`, { params });
+      const data = await getStockReport(selectedBrand || null, selectedCategory || null);
       
       // Tarih ve saat bilgisi ekle
       const reportWithTimestamp = {
-        ...response.data,
+        ...data,
         createdAt: new Date().toISOString(),
         createdDate: new Date().toLocaleDateString('tr-TR'),
         createdTime: new Date().toLocaleTimeString('tr-TR')
