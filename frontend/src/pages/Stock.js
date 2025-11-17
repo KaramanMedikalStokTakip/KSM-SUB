@@ -79,9 +79,9 @@ function Stock() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(`${API}/products`);
-      setProducts(response.data);
-      setFilteredProducts(response.data);
+      const data = await getAllProducts();
+      setProducts(data);
+      setFilteredProducts(data);
     } catch (error) {
       toast.error('Ürünler yüklenemedi');
     } finally {
