@@ -376,9 +376,15 @@ function Stock() {
     setPriceResults([]);
 
     try {
-      // TODO: Price comparison will be implemented
-      toast.info('Fiyat karşılaştırma özelliği hazırlanıyor...');
-      setPriceResults([]);
+      const result = await comparePrices(product.name, product.brand);
+      
+      if (result.success && result.price_results.length > 0) {
+        setPriceResults(result.price_results);
+        toast.success(`${result.result_count} site üzerinden fiyat karşılaştırması yapıldı`);
+      } else {
+        setPriceResults([]);
+        toast.info('Fiyat bilgisi bulunamadı');
+      }
     } catch (error) {
       console.error('Price comparison error:', error);
       toast.error('Fiyat karşılaştırması başarısız');
