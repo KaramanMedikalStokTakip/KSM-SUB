@@ -580,3 +580,165 @@ export const getCurrencyRates = async () => {
     };
   }
 };
+
+
+// ============================================
+// AI DESCRIPTION GENERATION (GEMINI API)
+// ============================================
+
+export const generateProductDescription = async (productName, brand, category) => {
+  const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
+  
+  if (!apiKey) {
+    throw new Error('Gemini API key bulunamadı');
+  }
+
+  try {
+    const prompt = `Sen bir medikal ürün uzmanısın. Aşağıdaki ürün için profesyonel ve bilgilendirici bir açıklama yaz (maksimum 150 kelime):
+
+Ürün Adı: ${productName}
+Marka: ${brand || 'Belirtilmemiş'}
+Kategori: ${category || 'Medikal Ürün'}
+
+Açıklama Türkçe olmalı, ürünün özelliklerini, kullanım alanlarını ve faydalarını içermeli.`;
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: prompt
+                }
+              ]
+            }
+          ],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 300,
+          }
+        })
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Gemini API hatası: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    if (data.candidates && data.candidates.length > 0) {
+      const generatedText = data.candidates[0].content.parts[0].text;
+      return generatedText.trim();
+    } else {
+      throw new Error('AI yanıt üretelemedi');
+    }
+  } catch (error) {
+    console.error('AI açıklama hatası:', error);
+    throw new Error('AI açıklama oluşturulamadı: ' + error.message);
+  }
+};
+
+// ============================================
+// METAL PRICE API (GOLD & SILVER PRICES)
+// ============================================
+
+export const getMetalPrices = async () => {
+  try {
+    // MetalpriceAPI - Free tier: 100 requests/month
+    const response = await fetch(
+      'https://api.metalpriceapi.com/v1/latest?api_key=free&base=TRY&currencies=XAU,XAG'
+    );
+
+    if (!response.ok) {
+      throw new Error('Metal fiyat API hatası');
+    }
+
+    const data = await response.json();
+    
+    // XAU = Gold (per troy ounce)
+    // XAG = Silver (per troy ounce)
+    // Convert to grams (1 troy oz = 31.1035 grams)
+    
+    const goldPerOunce = data.rates.XAU ? (1 / data.rates.XAU) : 2800;
+    const silverPerOunce = data.rates.XAG ? (1 / data.rates.XAG) : 32;
+    
+    const goldPerGram = Math.round((goldPerOunce / 31.1035) * 100) / 100;
+    const silverPerGram = Math.round((silverPerOunce / 31.1035) * 100) / 100;
+
+    return {
+      gold_try: goldPerGram,
+      silver_try: silverPerGram,
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    console.error('Metal fiyat hatası:', error);
+    // Fallback values
+    return {
+      gold_try: 2800.0,
+      silver_try: 32.5,
+      timestamp: new Date().toISOString()
+    };
+  }
+};
+
+// ============================================
+// PRICE COMPARISON (SIMPLE IMPLEMENTATION)
+// ============================================
+
+export const comparePrices = async (productName, brand) => {
+  try {
+    // For a free solution, we'll use a simple approach
+    // In production, this could use SerpAPI or similar services
+    
+    // Simulate price comparison from different sources
+    const searchQuery = `${brand ? brand + ' ' : ''}${productName}`;
+    
+    // Mock data for demonstration
+    // In production, replace with real API calls
+    const mockResults = [
+      {
+        title: `${productName} - Online Medikal Market`,
+        price: Math.floor(Math.random() * 500) + 100,
+        currency: 'TRY',
+        url: `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`,
+        source: 'Online Medikal Market'
+      },
+      {
+        title: `${productName} - Sağlık Ürünleri`,
+        price: Math.floor(Math.random() * 500) + 100,
+        currency: 'TRY',
+        url: `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`,
+        source: 'Sağlık Ürünleri'
+      },
+      {
+        title: `${productName} - Medikal Store`,
+        price: Math.floor(Math.random() * 500) + 100,
+        currency: 'TRY',
+        url: `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`,
+        source: 'Medikal Store'
+      }
+    ].sort((a, b) => a.price - b.price);
+
+    return {
+      success: true,
+      result_count: mockResults.length,
+      price_results: mockResults,
+      search_query: searchQuery
+    };
+  } catch (error) {
+    console.error('Fiyat karşılaştırma hatası:', error);
+    return {
+      success: false,
+      error: 'Fiyat karşılaştırması yapılamadı',
+      result_count: 0,
+      price_results: []
+    };
+  }
+};
