@@ -354,17 +354,16 @@ function Stock() {
 
     setAiLoading(true);
     try {
-      // TODO: AI description generation endpoint - requires backend implementation
-      toast.info('AI açıklama özelliği şu anda aktif değil');
-      // const response = await axios.post(`${API}/products/generate-description`, {
-      //   name: formData.name,
-      //   brand: formData.brand,
-      //   category: formData.category
-      // });
-      // setFormData({ ...formData, description: response.data.description });
-      // toast.success('Yapay zeka açıklaması oluşturuldu!');
+      const description = await generateProductDescription(
+        formData.name,
+        formData.brand,
+        formData.category
+      );
+      setFormData({ ...formData, description });
+      toast.success('✨ Yapay zeka açıklaması oluşturuldu!');
     } catch (error) {
-      toast.error('Açıklama oluşturulamadı');
+      console.error('AI açıklama hatası:', error);
+      toast.error('Açıklama oluşturulamadı: ' + error.message);
     } finally {
       setAiLoading(false);
     }
