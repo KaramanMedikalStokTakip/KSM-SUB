@@ -202,13 +202,13 @@ function POS() {
         payment_method: paymentMethod
       };
 
-      await axios.post(`${API}/sales`, saleData);
+      await createSale(saleData);
       toast.success('Satış başarıyla tamamlandı!');
       setCart([]);
       setDiscount(0);
       barcodeRef.current?.focus();
     } catch (error) {
-      toast.error('Satış işlemi başarısız!');
+      toast.error('Satış işlemi başarısız: ' + error.message);
     } finally {
       setLoading(false);
     }
