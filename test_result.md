@@ -611,23 +611,27 @@ backend:
 
 metadata:
   created_by: "main_agent"
-  version: "3.0"
+  version: "5.0"
   test_sequence: 0
   run_ui: false
   pwa_enabled: true
+  supabase_migration: true
+  backend_serverless: true
 
 test_plan:
   current_focus:
-    - "Kullanıcı Düzenleme Özelliği"
-    - "Stok Yetkilendirme - Depo ve Satış"
-    - "Çoklu Format Rapor İndirme (PDF/TXT Hata Düzeltmesi)"
+    - "Supabase Migration - Tüm Sayfalar"
+    - "Gemini AI Ürün Açıklaması"
+    - "MetalPrice API Entegrasyonu"
+    - "Fiyat Karşılaştırma Özelliği"
   stuck_tasks: []
-  test_all: false
+  test_all: true
   test_priority: "high_first"
-  backend_testing_complete: true
+  backend_testing_complete: false
   pwa_features_complete: true
-  ui_improvements_complete: false
-  report_improvements_complete: true
+  ui_improvements_complete: true
+  api_integrations_complete: true
+  supabase_migration_complete: true
 
 agent_communication:
     - agent: "main"
