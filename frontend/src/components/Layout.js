@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../App';
-import axios from 'axios';
-import { API } from '../App';
+import { getCurrencyRates } from '../lib/api';
 import { Button } from './ui/button';
 import { LayoutDashboard, Package, ShoppingCart, Users, FileText, Calendar as CalendarIcon, Settings as SettingsIcon, LogOut, Menu, X, DollarSign, Euro, TrendingUp } from 'lucide-react';
 
@@ -37,8 +36,8 @@ function Layout({ children }) {
 
   const fetchCurrency = async () => {
     try {
-      const response = await axios.get(`${API}/currency`);
-      setCurrency(response.data);
+      const data = await getCurrencyRates();
+      setCurrency(data);
     } catch (error) {
       console.error('Currency fetch error:', error);
     }
