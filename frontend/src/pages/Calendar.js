@@ -12,6 +12,7 @@ import { Calendar as CalendarIcon, Plus, Bell, Trash2, Edit } from 'lucide-react
 import { Calendar as CalendarComponent } from '../components/ui/calendar';
 
 function Calendar() {
+  const { user } = useAuth();
   const [events, setEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -24,15 +25,18 @@ function Calendar() {
     date: '',
     alarm: false
   });
+  const [editingEventId, setEditingEventId] = useState(null);
 
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    if (user?.id) {
+      fetchEvents();
+    }
+  }, [user]);
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get(`${API}/calendar`);
-      setEvents(response.data);
+      const data = await getCalendarEvents(user.id);
+      setEvents(data);
     } catch (error) {
       toast.error('Etkinlikler yüklenemedi');
     }
@@ -41,22 +45,34 @@ function Calendar() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API}/calendar`, {
-        ...formData,
-        date: new Date(formData.date).toISOString()
-      });
-      toast.success('Etkinlik eklendi');
+      if (editingEventId) {
+        // Update existing event
+        await updateCalendarEvent(editingEventId, {
+          ...formData,
+          date: new Date(formData.date).toISOString()
+        });
+        toast.success('Etkinlik güncellendi');
+        setEditingEventId(null);
+      } else {
+        // Create new event
+        await createCalendarEvent({
+          ...formData,
+          user_id: user.id,
+          date: new Date(formData.date).toISOString()
+        });
+        toast.success('Etkinlik eklendi');
+      }
       fetchEvents();
       setDialogOpen(false);
       resetForm();
     } catch (error) {
-      toast.error('İşlem başarısız');
+      toast.error('İşlem başarısız: ' + error.message);
     }
   };
 
   const handleDelete = async (eventId) => {
     try {
-      await axios.delete(`${API}/calendar/${eventId}`);
+      await deleteCalendarEvent(eventId);
       toast.success('Etkinlik silindi');
       fetchEvents();
       setDetailDialogOpen(false);
