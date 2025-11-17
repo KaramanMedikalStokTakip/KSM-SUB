@@ -556,26 +556,31 @@ export const getTopProfitProducts = async (startDate, endDate, limit = 10) => {
 
 export const getCurrencyRates = async () => {
   try {
-    const response = await fetch('https://api.exchangerate-api.com/v4/latest/TRY');
-    const data = await response.json();
-    const rates = data.rates;
+    // Get currency rates
+    const currencyResponse = await fetch('https://api.exchangerate-api.com/v4/latest/TRY');
+    const currencyData = await currencyResponse.json();
+    const rates = currencyData.rates;
 
     const usd_try = Math.round((1 / rates.USD) * 100) / 100;
     const eur_try = Math.round((1 / rates.EUR) * 100) / 100;
 
+    // Get metal prices
+    const metalPrices = await getMetalPrices();
+
     return {
       usd_try,
       eur_try,
-      gold_try: 5400.0, // Fallback value
-      silver_try: 62.5, // Fallback value
+      gold_try: metalPrices.gold_try,
+      silver_try: metalPrices.silver_try,
       timestamp: new Date().toISOString()
     };
   } catch (error) {
+    console.error('Kur bilgisi hatası:', error);
     return {
       usd_try: 35.50,
       eur_try: 38.20,
-      gold_try: 5400.0,
-      silver_try: 62.5,
+      gold_try: 2800.0,
+      silver_try: 32.5,
       timestamp: new Date().toISOString()
     };
   }
