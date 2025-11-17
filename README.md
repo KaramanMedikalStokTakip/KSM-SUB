@@ -33,7 +33,9 @@ Modern ve kullanıcı dostu bir medikal stok yönetimi, müşteri takibi ve iş 
 ### 📈 Raporlama
 - Satış raporları
 - Stok raporları
-- Gelir/gider analizi
+- En çok satan ve en karlı ürünler
+- **💱 Gerçek Zamanlı Kur Bilgileri** (USD, EUR, Altın, Gümüş)
+- PDF/Excel/TXT export desteği
 
 ### 📱 PWA Desteği
 - Mobil cihaza kurulabilir
