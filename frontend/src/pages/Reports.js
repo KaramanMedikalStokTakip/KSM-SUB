@@ -36,9 +36,9 @@ function Reports() {
 
   const fetchFilters = async () => {
     try {
-      const response = await axios.get(`${API}/products/filters`);
-      setBrands(response.data.brands);
-      setCategories(response.data.categories);
+      const data = await getProductFilters();
+      setBrands(data.brands);
+      setCategories(data.categories);
     } catch (error) {
       console.error('Filtreler yüklenemedi', error);
     }
