@@ -105,19 +105,55 @@
 user_problem_statement: "SUPABASE MİGRASYONU VE API ENTEGRASYONLARİ (Kasım 2025): Projenin MongoDB + FastAPI backend'inden Supabase PostgreSQL'e tam migrasyonu. Backend klasörü kaldırıldı, serverless mimari. AI ve External API entegrasyonları: 1) Gemini AI ile otomatik ürün açıklaması oluşturma, 2) MetalPrice API ile gerçek zamanlı altın/gümüş fiyatları, 3) Fiyat karşılaştırma sistemi."
 
 backend:
-  - task: "Test Verileri Manuel Ekleme"
+  - task: "Supabase Migration - Backend Kaldırma"
     implemented: true
     working: true
-    file: "backend/add_test_data.py"
+    file: "N/A (Backend klasörü silindi)"
     stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
         - working: true
           agent: "main"
-          comment: "ARALIK 2025 - Manuel test için direkt veritabanına Python script ile test verileri eklendi. Script: backend/add_test_data.py. 5 medikal ürün (Dijital Tansiyon Aleti, İnfrared Ateş Ölçer, Steril Eldiven Lateks, Nebulizatör Cihazı, Kan Şekeri Test Çubuğu) - bazıları düşük stokta, 5 müşteri (Ayşe Yılmaz, Mehmet Demir, Fatma Şahin, Ali Kara, Zeynep Arslan), 5 etkinlik (Stok Sayımı, Tedarikçi Toplantısı, Fiyat Güncellemesi, Müşteri Ziyareti, Ürün Eğitimi) başarıyla MongoDB'ye eklendi. Script çalıştırıldı ve veriler doğrulandı."
+          comment: "KASIM 2025 - FastAPI backend tamamen kaldırıldı. Serverless Supabase mimarisi. PostgreSQL database (users, products, customers, sales, calendar_events tabloları) Supabase'de oluşturuldu. RLS politikaları, indexes, triggers aktif. Şifre doğrulama RPC fonksiyonu (verify_user_password) PostgreSQL tarafında çalışıyor. Backend klasörü (~1,300 satır kod) silindi."
 
-  - task: "Kullanıcı Düzenleme Endpoint"
+  - task: "Gemini AI Entegrasyonu"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/lib/api.js, frontend/.env"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "KASIM 2025 - Gemini AI (v1.5-flash) entegrasyonu tamamlandı. API Key .env'ye eklendi (REACT_APP_GEMINI_API_KEY). generateProductDescription() fonksiyonu oluşturuldu - ürün adı, marka ve kategoriye göre Türkçe açıklama üretiyor. Stock.js'te AI butonuna tıklayınca açıklama form alanına dolduruluyor. Free tier: 60 req/min. Model: gemini-1.5-flash. Response time: ~2-3 saniye."
+
+  - task: "MetalPrice API Entegrasyonu"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/lib/api.js, frontend/.env"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "KASIM 2025 - MetalPrice API (metalpriceapi.com) entegrasyonu tamamlandı. getMetalPrices() fonksiyonu oluşturuldu - gerçek zamanlı XAU (altın) ve XAG (gümüş) fiyatlarını TRY bazında çekiyor. Troy ounce'tan gram'a dönüşüm yapılıyor (1 troy oz = 31.1035 gram). getCurrencyRates() fonksiyonuna entegre edildi. Dashboard'da gösteriliyor. Free tier: 100 req/ay. Fallback değerler mevcut."
+
+  - task: "Fiyat Karşılaştırma Sistemi"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/lib/api.js, frontend/src/pages/Stock.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "KASIM 2025 - comparePrices() fonksiyonu oluşturuldu. Şu anda mock data ile çalışıyor - 3 farklı siteden fiyat bilgileri simüle ediliyor. Stock.js'te 'Fiyat Karşılaştır' butonu var, dialog açılıp sonuçlar gösteriliyor. Fiyatlar küçükten büyüğe sıralanıyor. 'Siteye Git' butonu ile Google arama yönlendirmesi yapılıyor. Production için SERPAPI veya benzeri gerçek API entegrasyonu gerekebilir."
+
+  - task: "Supabase RPC Fonksiyonları"
     implemented: true
     working: true
     file: "backend/server.py"
