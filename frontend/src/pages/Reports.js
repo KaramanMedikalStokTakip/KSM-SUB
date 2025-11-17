@@ -129,20 +129,18 @@ function Reports() {
 
     setLoading(true);
     try {
-      const response = await axios.get(`${API}/reports/top-selling`, {
-        params: { start_date: startDate, end_date: endDate, limit: 10 }
-      });
+      const data = await getTopSellingProducts(startDate, endDate, 10);
       
       // Tarih ve saat bilgisi ile rapor objesi oluştur
       const reportWithMeta = {
-        data: response.data,
+        data: data,
         createdAt: new Date().toISOString(),
         createdDate: new Date().toLocaleDateString('tr-TR'),
         createdTime: new Date().toLocaleTimeString('tr-TR'),
         dateRange: `${startDate} - ${endDate}`
       };
       
-      setTopSelling(response.data);
+      setTopSelling(data);
       
       // localStorage'a kaydet
       localStorage.setItem('savedTopSelling', JSON.stringify(reportWithMeta));
