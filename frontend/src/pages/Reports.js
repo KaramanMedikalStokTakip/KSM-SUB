@@ -176,9 +176,8 @@ function Reports() {
         dateRange: `${startDate} - ${endDate}`
       };
       
-      setTopProfit(response.data);
+      setTopProfit(data);
       
-      // localStorage'a kaydet
       localStorage.setItem('savedTopProfit', JSON.stringify(reportWithMeta));
       localStorage.setItem('savedTopProfitMeta', JSON.stringify({
         createdDate: reportWithMeta.createdDate,
