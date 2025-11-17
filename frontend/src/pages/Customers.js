@@ -42,9 +42,9 @@ function Customers() {
 
   const fetchCustomers = async () => {
     try {
-      const response = await axios.get(`${API}/customers`);
-      setCustomers(response.data);
-      setFilteredCustomers(response.data);
+      const data = await getAllCustomers();
+      setCustomers(data);
+      setFilteredCustomers(data);
     } catch (error) {
       toast.error('Müşteriler yüklenemedi');
     }
@@ -58,10 +58,8 @@ function Customers() {
 
     setIsSearching(true);
     try {
-      const response = await axios.get(`${API}/customers/search`, {
-        params: { q: searchQuery }
-      });
-      setFilteredCustomers(response.data);
+      const data = await searchCustomers(searchQuery);
+      setFilteredCustomers(data);
     } catch (error) {
       toast.error('Arama başarısız');
       setFilteredCustomers(customers);
@@ -72,8 +70,8 @@ function Customers() {
 
   const fetchCustomerPurchases = async (customerId) => {
     try {
-      const response = await axios.get(`${API}/customers/${customerId}/purchases`);
-      setPurchases(response.data);
+      const data = await getCustomerPurchases(customerId);
+      setPurchases(data);
     } catch (error) {
       toast.error('Satın almalar yüklenemedi');
     }
@@ -82,13 +80,13 @@ function Customers() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API}/customers`, formData);
+      await createCustomer(formData);
       toast.success('Müşteri eklendi');
       fetchCustomers();
       setDialogOpen(false);
       resetForm();
     } catch (error) {
-      toast.error('İşlem başarısız');
+      toast.error('İşlem başarısız: ' + error.message);
     }
   };
 
@@ -102,11 +100,11 @@ function Customers() {
     if (!window.confirm('Bu müşteriyi silmek istediğinizden emin misiniz?')) return;
 
     try {
-      await axios.delete(`${API}/customers/${customerId}`);
+      await deleteCustomer(customerId);
       toast.success('Müşteri silindi');
       fetchCustomers();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Silme işlemi başarısız');
+      toast.error(error.message || 'Silme işlemi başarısız');
     }
   };
 
