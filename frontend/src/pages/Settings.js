@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { API } from '../App';
 import { useAuth } from '../App';
 import { toast } from 'sonner';
+import { getAllUsers, registerUser, updateUser, deleteUser } from '../lib/api';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Label } from '../components/ui/label';
 import { Switch } from '../components/ui/switch';
