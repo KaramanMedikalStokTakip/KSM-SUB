@@ -454,7 +454,7 @@ function Stock() {
     if (!window.confirm('Ürünü silmek istediğinize emin misiniz?')) return;
 
     try {
-      await axios.delete(`${API}/products/${productId}`);
+      await deleteProduct(productId);
       toast.success('Ürün silindi');
       fetchProducts();
     } catch (error) {
