@@ -95,11 +95,13 @@ function Calendar() {
       date: dateStr,
       alarm: event.alarm || false
     });
+    setEditingEventId(event.id);
     setDialogOpen(true);
   };
 
   const resetForm = () => {
     setFormData({ title: '', description: '', date: '', alarm: false });
+    setEditingEventId(null);
   };
 
   const getEventsForDate = (date) => {
