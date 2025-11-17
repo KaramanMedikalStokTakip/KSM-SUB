@@ -39,14 +39,15 @@ function Dashboard() {
 
   const fetchDashboardData = async () => {
     try {
-      const [statsRes, lowStockRes] = await Promise.all([
-        axios.get(`${API}/reports/dashboard`),
-        axios.get(`${API}/products/low-stock`)
+      const [statsData, lowStockData] = await Promise.all([
+        getDashboardStats(),
+        getLowStockProducts()
       ]);
-      setStats(statsRes.data);
-      setLowStock(lowStockRes.data);
+      setStats(statsData);
+      setLowStock(lowStockData);
     } catch (error) {
       console.error('Dashboard data fetch error:', error);
+      toast.error('Dashboard verileri yüklenemedi');
     } finally {
       setLoading(false);
     }
@@ -55,8 +56,8 @@ function Dashboard() {
   const searchProductByBarcode = async (barcode) => {
     setSearching(true);
     try {
-      const response = await axios.get(`${API}/products/barcode/${barcode}`);
-      setFoundProduct(response.data);
+      const product = await getProductByBarcode(barcode);
+      setFoundProduct(product);
       toast.success('Ürün bulundu!');
     } catch (error) {
       toast.error('Ürün bulunamadı!');
