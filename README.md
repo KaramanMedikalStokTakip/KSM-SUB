@@ -135,10 +135,11 @@ Uygulama Progressive Web App özelliklerine sahiptir. Detaylı kurulum talimatla
 
 ## 🔒 Güvenlik
 
-- JWT tabanlı authentication
-- Bcrypt password hashing
-- Role-based access control
-- CORS protection
+- Custom authentication with bcrypt password hashing
+- Row Level Security (RLS) policies
+- Role-based access control (yönetici/depo/satış)
+- PostgreSQL RPC functions for secure operations
+- Environment variables for API keys
 
 ## 📄 Lisans
 
