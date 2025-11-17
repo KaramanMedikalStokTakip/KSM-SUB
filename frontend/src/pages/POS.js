@@ -27,8 +27,7 @@ function POS() {
 
   const addProductToCart = async (barcode) => {
     try {
-      const response = await axios.get(`${API}/products/barcode/${barcode}`);
-      const product = response.data;
+      const product = await getProductByBarcode(barcode);
 
       if (product.quantity <= 0) {
         toast.error('Ürün stokta yok!');
