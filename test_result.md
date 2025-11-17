@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "YENİ DÜZENLEMELER (Aralık 2025): 1) PDF dosya indirme hatası düzeltmesi (doc.autoTable is not a function), 2) Yönetici harici kullanıcılara Raporlar sekmesi görünmesin, 3) Manuel test için stok, müşteri ve etkinlik kısımlarına 5'er adet örnek veri eklenmesi"
+user_problem_statement: "SUPABASE MİGRASYONU VE API ENTEGRASYONLARİ (Kasım 2025): Projenin MongoDB + FastAPI backend'inden Supabase PostgreSQL'e tam migrasyonu. Backend klasörü kaldırıldı, serverless mimari. AI ve External API entegrasyonları: 1) Gemini AI ile otomatik ürün açıklaması oluşturma, 2) MetalPrice API ile gerçek zamanlı altın/gümüş fiyatları, 3) Fiyat karşılaştırma sistemi."
 
 backend:
   - task: "Test Verileri Manuel Ekleme"
