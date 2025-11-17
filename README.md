@@ -87,21 +87,35 @@ Kullanıcı Adı: admin
 
 ## 📦 Kurulum
 
-### Backend
-
-```bash
-cd backend
-pip install -r requirements.txt
-uvicorn server:app --host 0.0.0.0 --port 8001 --reload
-```
+### Gereksinimler
+- Node.js 16+
+- Yarn package manager
+- Supabase hesabı ([supabase.com](https://supabase.com))
+- Gemini API key ([makersuite.google.com](https://makersuite.google.com))
 
 ### Frontend
 
 ```bash
 cd frontend
 yarn install
+
+# .env dosyasını yapılandırın:
+REACT_APP_SUPABASE_URL=your_supabase_url
+REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
+REACT_APP_GEMINI_API_KEY=your_gemini_api_key
+REACT_APP_METAL_PRICE_API_KEY=free
+
 yarn start
 ```
+
+### Supabase Database Setup
+
+1. Supabase hesabı oluşturun
+2. Yeni proje oluşturun
+3. SQL Editor'de `supabase-schema.sql` dosyasını çalıştırın
+4. API bilgilerini `.env` dosyasına ekleyin
+
+Detaylı kurulum için [SUPABASE_MIGRATION_GUIDE.md](SUPABASE_MIGRATION_GUIDE.md) dosyasına bakın.
 
 ## 🌐 PWA Kurulumu
 
