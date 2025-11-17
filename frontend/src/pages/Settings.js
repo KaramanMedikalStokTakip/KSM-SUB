@@ -116,8 +116,8 @@ function Settings() {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(`${API}/users`);
-      setUsers(response.data);
+      const data = await getAllUsers();
+      setUsers(data);
     } catch (error) {
       console.error('Users fetch error:', error);
       // Fallback to current user if API fails
@@ -144,13 +144,13 @@ function Settings() {
   const handleAddUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API}/auth/register`, newUser);
+      await registerUser(newUser.username, newUser.email || '', newUser.password, newUser.role);
       toast.success('Kullanıcı başarıyla eklendi');
       fetchUsers();
       setDialogOpen(false);
       setNewUser({ username: '', password: '', role: 'depo' });
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Kullanıcı eklenemedi');
+      toast.error(error.message || 'Kullanıcı eklenemedi');
     }
   };
 
