@@ -1,18 +1,19 @@
-# 📦 Stok Yönetim ve CRM Sistemi
+# 📦 Karaman Medikal Stok Takip Sistemi
 
-Modern ve kullanıcı dostu bir stok yönetimi, müşteri takibi ve iş organizasyon sistemi.
+Modern ve kullanıcı dostu bir medikal stok yönetimi, müşteri takibi ve iş organizasyon sistemi.
 
-> **🎉 v5.0 - Supabase Migration!** Bu proje FastAPI + MongoDB'den Supabase (PostgreSQL) ile tamamen serverless mimariye taşındı. Detaylar için [SUPABASE_MIGRATION_GUIDE.md](SUPABASE_MIGRATION_GUIDE.md) dosyasına bakın.
+> **🎉 v5.0 - Supabase Migration + AI Entegrasyonları!** Bu proje FastAPI + MongoDB'den Supabase (PostgreSQL) ile tamamen serverless mimariye taşındı. Gemini AI ve MetalPrice API entegrasyonları eklendi. Detaylar için [SUPABASE_MIGRATION_GUIDE.md](SUPABASE_MIGRATION_GUIDE.md) ve [API_INTEGRATIONS.md](API_INTEGRATIONS.md) dosyalarına bakın.
 
 ## ✨ Özellikler
 
 ### 📊 Stok Yönetimi
 - Ürün ekleme, düzenleme, silme
+- **🤖 AI ile Otomatik Açıklama Oluşturma** (Gemini AI)
 - Barkod ile ürün arama
-- Kamera ile barkod okuma
+- Kamera ile barkod okuma ve fotoğraf çekme
 - Kutu/adet bazında satış takibi
-- Stok uyarıları
-- Fiyat karşılaştırma
+- Stok uyarıları ve filtreleme
+- **💰 Fiyat karşılaştırma** sistemi
 
 ### 👥 Müşteri Yönetimi
 - Müşteri kayıt ve takibi
