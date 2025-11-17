@@ -414,17 +414,17 @@ function Stock() {
 
     try {
       if (editMode) {
-        await axios.put(`${API}/products/${currentProduct.id}`, formData);
+        await updateProduct(currentProduct.id, formData);
         toast.success('Ürün güncellendi');
       } else {
-        await axios.post(`${API}/products`, formData);
+        await createProduct(formData);
         toast.success('Ürün eklendi');
       }
       fetchProducts();
       resetForm();
       setDialogOpen(false);
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'işlem başarısız');
+      toast.error(error.message || 'işlem başarısız');
     } finally {
       setLoading(false);
     }
