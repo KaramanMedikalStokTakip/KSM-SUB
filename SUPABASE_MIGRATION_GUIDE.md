@@ -142,7 +142,7 @@ yarn add @supabase/supabase-js bcryptjs
 
 **DEĞİŞTİRİLEN:**
 ```diff
-- REACT_APP_BACKEND_URL=https://retail-manager-68.preview.emergentagent.com
+- REACT_APP_BACKEND_URL=https://retail-gemini-app.preview.emergentagent.com
 + REACT_APP_SUPABASE_URL=https://bqrxjhppxlzcllgwrkxf.supabase.co
 + REACT_APP_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJxcnhqaHBweGx6Y2xsZ3dya3hmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzMjI3MTYsImV4cCI6MjA3ODg5ODcxNn0.A75Y3qp_5l25I3PY7SUM6iLVQSx-BnkPvVik41oYF58
   WDS_SOCKET_PORT=443
