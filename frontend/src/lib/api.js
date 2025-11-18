@@ -429,11 +429,12 @@ export const getDashboardStats = async () => {
     .from('products')
     .select('*', { count: 'exact', head: true });
 
-  // Get low stock count
-  const { data: lowStockProducts } = await supabase
+  // Get low stock count (fetch all and filter in JS since Supabase doesn't support column comparison)
+  const { data: allProducts } = await supabase
     .from('products')
-    .select('id')
-    .filter('quantity', 'lte', 'min_quantity');
+    .select('id, quantity, min_quantity');
+  
+  const lowStockProducts = allProducts?.filter(p => p.quantity <= p.min_quantity) || [];
 
   // Get today's sales
   const today = new Date();
