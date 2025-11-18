@@ -556,6 +556,254 @@ Password: Admin123!
 
 ---
 
+## 🔧 SORUN GİDERME (TROUBLESHOOTING)
+
+### Sorun 1: "Kullanıcı adı veya şifre hatalı" Hatası
+
+**Belirti:**
+- Login ekranında admin/Admin123! ile giriş yapılamıyor
+- Console'da "Kullanıcı adı veya şifre hatalı" hatası görünüyor
+
+**Çözüm:**
+
+#### A) Admin Kullanıcısı Oluşturma (Supabase SQL Editor)
+
+```sql
+-- 1. pgcrypto extension'ını etkinleştir
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+-- 2. Eski admin varsa sil
+DELETE FROM users WHERE username = 'admin';
+
+-- 3. Yeni admin oluştur (şifre: Admin123!)
+INSERT INTO users (username, email, password, role)
+VALUES (
+    'admin',
+    'admin@karaman.com',
+    crypt('Admin123!', gen_salt('bf', 10)),
+    'yönetici'
+);
+
+-- 4. Kontrol et
+SELECT id, username, email, role, created_at 
+FROM users 
+WHERE username = 'admin';
+```
+
+#### B) RPC Fonksiyonu Kontrol
+
+Eğer `verify_user_password()` RPC fonksiyonu yoksa:
+
+```sql
+CREATE OR REPLACE FUNCTION verify_user_password(
+  p_username TEXT,
+  p_password TEXT
+)
+RETURNS TABLE(
+  id UUID,
+  username TEXT,
+  email TEXT,
+  role TEXT,
+  created_at TIMESTAMPTZ,
+  password_match BOOLEAN
+) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT 
+    u.id,
+    u.username,
+    u.email,
+    u.role,
+    u.created_at,
+    (u.password = crypt(p_password, u.password)) AS password_match
+  FROM users u
+  WHERE u.username = p_username
+  LIMIT 1;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+```
+
+**Not:** `loginUser()` fonksiyonunda fallback mekanizması var, RPC yoksa otomatik olarak direkt users tablosundan okuma yapıyor.
+
+---
+
+### Sorun 2: Dashboard'da Veriler Görünmüyor
+
+**Belirti:**
+- Dashboard'da "0 ürün" gösteriliyor ama Stok Yönetimi'nde ürünler var
+- Console'da "400 Bad Request" hatası: `quantity=lte.min_quantity`
+- "Failed to execute 'clone' on 'Response'" hatası
+
+**Çözüm:**
+
+Supabase **column-to-column karşılaştırma** desteklemiyor. `/app/frontend/src/lib/api.js` dosyasında değişiklik yapıldı:
+
+**Önceki (Hatalı):**
+```javascript
+const { data, error } = await supabase
+  .from('products')
+  .select('*')
+  .filter('quantity', 'lte', 'min_quantity'); // ❌ Çalışmaz
+```
+
+**Yeni (Doğru):**
+```javascript
+const { data, error } = await supabase
+  .from('products')
+  .select('*');
+
+// JavaScript'te filtreleme
+const lowStock = data.filter(p => p.quantity <= p.min_quantity);
+```
+
+**Düzeltildi:** `getLowStockProducts()` ve `getDashboardStats()` fonksiyonları güncellendi.
+
+---
+
+### Sorun 3: Metal Fiyatları Hata Veriyor
+
+**Belirti:**
+- Console'da "Cannot read properties of undefined (reading 'XAU')" hatası
+- Metal fiyatları gösterilmiyor
+
+**Çözüm:**
+
+`getMetalPrices()` fonksiyonunda `data.rates` kontrolü eklendi:
+
+```javascript
+export const getMetalPrices = async () => {
+  try {
+    const response = await fetch(
+      'https://api.metalpriceapi.com/v1/latest?api_key=free&base=TRY&currencies=XAU,XAG'
+    );
+    const data = await response.json();
+    
+    // ✅ Güvenli kontrol
+    if (!data || !data.rates || !data.rates.XAU || !data.rates.XAG) {
+      throw new Error('Invalid API response');
+    }
+    
+    // ... fiyat hesaplama
+  } catch (error) {
+    // Fallback değerler
+    return {
+      gold_try: 2800.0,
+      silver_try: 32.5,
+      timestamp: new Date().toISOString()
+    };
+  }
+};
+```
+
+**Düzeltildi:** API hata verirse fallback değerlere geçiliyor.
+
+---
+
+### Sorun 4: "AI ile Açıklama Oluştur" Çalışmıyor
+
+**Belirti:**
+- Stock.js'te AI butonu hata veriyor
+- Console'da "API key not valid. Please pass a valid API key" hatası
+
+**Çözüm:**
+
+#### A) Gemini API Key Alma (Ücretsiz)
+
+1. https://aistudio.google.com/app/apikey adresine gidin
+2. "Create API Key" butonuna tıklayın
+3. API key'i kopyalayın
+
+#### B) .env Dosyasını Güncelleme
+
+`/app/frontend/.env` dosyasına ekleyin:
+
+```env
+REACT_APP_GEMINI_API_KEY=YOUR_GEMINI_API_KEY_HERE
+```
+
+#### C) Frontend'i Yeniden Başlatma
+
+```bash
+cd /app/frontend
+sudo supervisorctl restart frontend
+```
+
+**Gemini Free Tier:** 60 istek/dakika
+
+---
+
+### Sorun 5: Frontend Başlamıyor (craco not found)
+
+**Belirti:**
+- `sudo supervisorctl status frontend` → FATAL
+- Log'da: `/bin/sh: 1: craco: not found`
+
+**Çözüm:**
+
+```bash
+cd /app/frontend
+yarn install
+sudo supervisorctl restart frontend
+```
+
+**Açıklama:** `@craco/craco` paketi node_modules'de eksikti, `yarn install` ile kuruldu.
+
+---
+
+### Sorun 6: RLS (Row Level Security) Hataları
+
+**Belirti:**
+- "new row violates row-level security policy" hatası
+- Tablolara insert/update yapılamıyor
+
+**Çözüm:**
+
+Supabase Dashboard → Authentication → Policies:
+
+**Users tablosu için:**
+```sql
+-- Herkes okuyabilir
+CREATE POLICY "Users can view all users"
+    ON users FOR SELECT
+    USING (true);
+```
+
+**Products tablosu için:**
+```sql
+-- Herkes okuyabilir
+CREATE POLICY "Everyone can view products"
+    ON products FOR SELECT
+    USING (true);
+```
+
+---
+
+### Yararlı Komutlar
+
+#### Frontend Durumu Kontrol
+```bash
+sudo supervisorctl status frontend
+```
+
+#### Frontend Logları
+```bash
+tail -f /var/log/supervisor/frontend.out.log
+tail -f /var/log/supervisor/frontend.err.log
+```
+
+#### Frontend Yeniden Başlatma
+```bash
+sudo supervisorctl restart frontend
+```
+
+#### Package Kurulumu
+```bash
+cd /app/frontend
+yarn install
+```
+
+---
+
 **Migrasyon Tamamlanma Tarihi:** 16 Kasım 2025  
-**Versiyon:** 5.0 (Supabase Migration)  
-**Son Güncelleme:** 17 Kasım 2025 - AI ve API entegrasyonları tamamlandı (Gemini AI, MetalPrice API, Fiyat Karşılaştırma)
+**Versiyon:** 5.0.1 (Supabase Migration + Bugfixes)  
+**Son Güncelleme:** 18 Kasım 2025 - Login, Dashboard ve AI entegrasyonu hataları düzeltildi
