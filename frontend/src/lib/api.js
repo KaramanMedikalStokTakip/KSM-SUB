@@ -6,26 +6,52 @@ import bcrypt from 'bcryptjs';
 // ============================================
 
 export const loginUser = async (username, password) => {
-  // Call Supabase RPC function to verify password
-  const { data, error } = await supabase
-    .rpc('verify_user_password', {
-      p_username: username,
-      p_password: password
-    });
+  try {
+    // First, try RPC function (if it exists in Supabase)
+    const { data: rpcData, error: rpcError } = await supabase
+      .rpc('verify_user_password', {
+        p_username: username,
+        p_password: password
+      });
 
-  if (error) throw new Error('Giriş hatası: ' + error.message);
-  if (!data || data.length === 0) throw new Error('Kullanıcı adı veya şifre hatalı');
+    // If RPC works, use it
+    if (!rpcError && rpcData && rpcData.length > 0) {
+      const result = rpcData[0];
+      if (result.password_match) {
+        const { password_match, ...userWithoutPassword } = result;
+        return userWithoutPassword;
+      }
+      throw new Error('Kullanıcı adı veya şifre hatalı');
+    }
 
-  const result = data[0];
+    // Fallback: If RPC doesn't work, use direct query with bcrypt
+    console.log('RPC failed, using fallback method:', rpcError?.message || 'RPC not available');
+    
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('id, username, email, password, role, created_at')
+      .eq('username', username)
+      .single();
 
-  // Check if password matches
-  if (!result.password_match) {
-    throw new Error('Kullanıcı adı veya şifre hatalı');
+    if (error || !user) {
+      throw new Error('Kullanıcı adı veya şifre hatalı');
+    }
+
+    // Verify password using bcrypt
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    
+    if (!passwordMatch) {
+      throw new Error('Kullanıcı adı veya şifre hatalı');
+    }
+
+    // Return user without password
+    const { password: _, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+    
+  } catch (err) {
+    console.error('Login error:', err);
+    throw err;
   }
-
-  // Return user data without password_match field
-  const { password_match, ...userWithoutPassword } = result;
-  return userWithoutPassword;
 };
 
 export const registerUser = async (username, email, password, role = 'depo') => {
