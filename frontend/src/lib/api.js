@@ -156,14 +156,17 @@ export const getProductByBarcode = async (barcode) => {
 };
 
 export const getLowStockProducts = async () => {
+  // Supabase doesn't support column-to-column comparison in filters
+  // So we fetch all products and filter in JavaScript
   const { data, error } = await supabase
     .from('products')
     .select('*')
-    .filter('quantity', 'lte', 'min_quantity')
     .order('quantity', { ascending: true });
 
   if (error) throw error;
-  return data;
+  
+  // Filter products where quantity <= min_quantity
+  return data.filter(product => product.quantity <= product.min_quantity);
 };
 
 export const createProduct = async (productData) => {
