@@ -1,6 +1,70 @@
 # CHANGELOG
 Tüm önemli değişiklikler bu dosyada belgelenmektedir.
 
+## [5.0.1] - 2025-11-18 - SUPABASE MİGRASYON HATA DÜZELTMELERİ
+
+### 🐛 Düzeltmeler
+
+#### Login Sistemi Düzeltmeleri
+- **Frontend Bağımlılıkları:** `yarn install` çalıştırıldı, eksik `@craco/craco` paketi kuruldu
+- **Login Fallback Mekanizması:** `loginUser()` fonksiyonuna akıllı fallback eklendi
+  - İlk olarak `verify_user_password()` RPC'yi deniyor
+  - RPC yoksa veya hata verirse direkt users tablosundan `bcrypt.compare()` ile doğrulama
+  - Bu sayede Supabase'de RPC tanımlı olmasa bile login çalışıyor
+- **RLS Politikaları:** Users tablosunda 'Users can view all users' SELECT politikası doğrulandı
+
+#### Dashboard Veri Yükleme Hataları
+- **Düşük Stok Sorgusu:** Supabase column-to-column karşılaştırma desteklemiyor
+  - **Önceki:** `.filter('quantity', 'lte', 'min_quantity')` ❌ (400 Bad Request)
+  - **Yeni:** Tüm ürünleri çekip JavaScript'te filtreleme: `data.filter(p => p.quantity <= p.min_quantity)` ✅
+  - `getLowStockProducts()` ve `getDashboardStats()` fonksiyonları güncellendi
+  
+- **Metal Fiyat API:** `getMetalPrices()` fonksiyonunda güvenli kontroller eklendi
+  - `data.rates` undefined kontrolü eklendi
+  - API hata verirse fallback değerlere geçiliyor (gold: 2800 TL/gram, silver: 32.5 TL/gram)
+
+#### Gemini AI Entegrasyonu
+- **API Key Güncelleme:** Yeni Gemini API key (Google AI Studio'dan alındı)
+- **Environment Variable:** `REACT_APP_GEMINI_API_KEY` doğrulandı ve frontend restart edildi
+- **AI Açıklama:** Ürün düzenleme sayfasında "AI ile Açıklama Oluştur" özelliği çalışır hale getirildi
+
+### 📝 Dokümantasyon
+- `test_result.md` güncellendi (3 yeni agent communication kaydı)
+- `CHANGELOG.md` güncellendi (bu bölüm)
+
+### 🔧 Teknik Detaylar
+
+#### Değiştirilen Dosyalar
+1. `/app/frontend/src/lib/api.js`
+   - `loginUser()` - Fallback mekanizması eklendi (43 satır)
+   - `getLowStockProducts()` - JS filtreleme (9 satır)
+   - `getDashboardStats()` - Low stock count JS filtreleme (5 satır)
+   - `getMetalPrices()` - data.rates null kontrolü (4 satır)
+
+2. `/app/frontend/.env`
+   - `REACT_APP_GEMINI_API_KEY` doğrulandı
+
+3. `/app/test_result.md`
+   - Agent communication log güncellendi (3 kayıt)
+
+#### Sorun Giderme Adımları
+1. `cd /app/frontend && yarn install` - Bağımlılık kurulumu
+2. `sudo supervisorctl restart frontend` - Frontend yeniden başlatma
+3. Supabase SQL Editor'de admin kullanıcısı oluşturuldu:
+   ```sql
+   CREATE EXTENSION IF NOT EXISTS pgcrypto;
+   INSERT INTO users (username, email, password, role)
+   VALUES ('admin', 'admin@karaman.com', crypt('Admin123!', gen_salt('bf', 10)), 'yönetici');
+   ```
+
+### ✅ Test Sonuçları
+- ✅ Login ekranı çalışıyor
+- ✅ Admin girişi başarılı (username: admin, password: Admin123!)
+- ✅ Dashboard verileri yükleniyor (ürün sayısı, düşük stok, metal fiyatları)
+- ✅ AI açıklama özelliği çalışıyor
+
+---
+
 ## [5.0.0] - 2025-11-16 - SUPABASE MİGRASYONU
 
 ### 🎯 Büyük Değişiklikler
