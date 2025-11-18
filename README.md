@@ -141,6 +141,26 @@ Uygulama Progressive Web App özelliklerine sahiptir. Detaylı kurulum talimatla
 - PostgreSQL RPC functions for secure operations
 - Environment variables for API keys
 
+## 🐛 Sorun Giderme
+
+### Login Yapamıyorum
+- **Çözüm:** [SUPABASE_MIGRATION_GUIDE.md - Sorun 1](SUPABASE_MIGRATION_GUIDE.md#sorun-1-kullanıcı-adı-veya-şifre-hatalı-hatası)
+- Admin kullanıcısını Supabase SQL Editor'de oluşturmanız gerekebilir
+
+### Dashboard'da Veriler Görünmüyor
+- **Çözüm:** [SUPABASE_MIGRATION_GUIDE.md - Sorun 2](SUPABASE_MIGRATION_GUIDE.md#sorun-2-dashboardda-veriler-görünmüyor)
+- Supabase column-to-column karşılaştırma sorunu düzeltildi (v5.0.1)
+
+### AI Açıklama Çalışmıyor
+- **Çözüm:** [SUPABASE_MIGRATION_GUIDE.md - Sorun 4](SUPABASE_MIGRATION_GUIDE.md#sorun-4-ai-ile-açıklama-oluştur-çalışmıyor)
+- Gemini API key eklemeniz gerekiyor
+
+### Frontend Başlamıyor
+- **Çözüm:** [SUPABASE_MIGRATION_GUIDE.md - Sorun 5](SUPABASE_MIGRATION_GUIDE.md#sorun-5-frontend-başlamıyor-craco-not-found)
+- `yarn install` çalıştırın
+
+Daha fazla sorun giderme için [SUPABASE_MIGRATION_GUIDE.md](SUPABASE_MIGRATION_GUIDE.md) dosyasındaki "Sorun Giderme" bölümüne bakın.
+
 ## 📄 Lisans
 
 Bu proje özel kullanım için geliştirilmiştir.
