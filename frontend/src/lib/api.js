@@ -697,12 +697,18 @@ export const getMetalPrices = async () => {
 
     const data = await response.json();
     
+    // Check if data and rates exist
+    if (!data || !data.rates || !data.rates.XAU || !data.rates.XAG) {
+      console.warn('Metal price API returned invalid data, using fallback');
+      throw new Error('Invalid API response');
+    }
+    
     // XAU = Gold (per troy ounce)
     // XAG = Silver (per troy ounce)
     // Convert to grams (1 troy oz = 31.1035 grams)
     
-    const goldPerOunce = data.rates.XAU ? (1 / data.rates.XAU) : 2800;
-    const silverPerOunce = data.rates.XAG ? (1 / data.rates.XAG) : 32;
+    const goldPerOunce = 1 / data.rates.XAU;
+    const silverPerOunce = 1 / data.rates.XAG;
     
     const goldPerGram = Math.round((goldPerOunce / 31.1035) * 100) / 100;
     const silverPerGram = Math.round((silverPerOunce / 31.1035) * 100) / 100;
@@ -714,7 +720,7 @@ export const getMetalPrices = async () => {
     };
   } catch (error) {
     console.error('Metal fiyat hatası:', error);
-    // Fallback values
+    // Fallback values (realistic prices for Turkey as of 2025)
     return {
       gold_try: 2800.0,
       silver_try: 32.5,
